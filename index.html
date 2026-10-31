@@ -1,15 +1,16 @@
-<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>Garden With Message</title><style>*{margin:0;padding:0}body{overflow:hidden;background:#87CEEB}canvas{display:block;width:100vw;height:100vh}</style></head><body><canvas id="c"></canvas><script>
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>Home Sweet Home</title><style>*{margin:0;padding:0}body{overflow:hidden;background:#87CEEB}canvas{display:block;width:100vw;height:100vh}</style></head><body><canvas id="c"></canvas><script>
 const cv=document.getElementById('c'), x=cv.getContext('2d');
 function resize(){cv.width=innerWidth; cv.height=innerHeight;} addEventListener('resize',resize); resize();
-let t=0, falling=[]; for(let i=0;i<25;i++) falling.push({x:Math.random()*400, y:Math.random()*400, vx:(Math.random()-0.5)*0.7, vy:Math.random()*1+0.4, r:Math.random()*4+3});
-let birds=[]; for(let i=0;i<6;i++) birds.push({x:Math.random()*cv.width, y:50+Math.random()*150, vx:0.5+Math.random()*1, wing:Math.random()*10});
-let flowers=[]; for(let i=0;i<70;i++) flowers.push({x:0, y:0, type:Math.floor(Math.random()*3)});
-let drops=[];
+let t=0, falling=[]; for(let i=0;i<20;i++) falling.push({x:Math.random()*400, y:Math.random()*400, vx:(Math.random()-0.5)*0.6, vy:Math.random()*1+0.3, r:Math.random()*4+2});
+let birds=[]; for(let i=0;i<5;i++) birds.push({x:Math.random()*cv.width, y:50+Math.random()*120, vx:0.6+Math.random()*0.8, wing:Math.random()*10});
+let flowers=[]; for(let i=0;i<60;i++) flowers.push({x:0, y:0, type:Math.floor(Math.random()*3)});
+let drops=[], overflowDrops=[], manStep=0;
 
 function draw(){
- t+=0.03; let W=cv.width, H=cv.height;
+ t+=0.03; manStep+=0.03; let W=cv.width, H=cv.height;
  x.fillStyle="#87CEEB"; x.fillRect(0,0,W,H*0.6);
  x.fillStyle="#7CFC00"; x.fillRect(0,H*0.6,W,H*0.4);
+ // SUN
  let sunX=W-110,sunY=110;
  x.strokeStyle="rgba(255,215,0,0.8)"; x.lineWidth=4; for(let i=0;i<12;i++){let a=(i/12)*Math.PI*2+t; x.beginPath(); x.moveTo(sunX+Math.cos(a)*42,sunY+Math.sin(a)*42); x.lineTo(sunX+Math.cos(a)*68,sunY+Math.sin(a)*68); x.stroke();}
  x.fillStyle="#FFD700"; x.beginPath(); x.arc(sunX,sunY,42,0,7); x.fill();
@@ -17,20 +18,44 @@ function draw(){
  x.fillStyle="black"; x.beginPath(); x.arc(sunX-11+Math.sin(t*2)*2,sunY-6,3,0,7); x.arc(sunX+11+Math.sin(t*2)*2,sunY-6,3,0,7); x.fill();
  x.strokeStyle="black"; x.lineWidth=2.5; x.beginPath(); x.arc(sunX,sunY+11,13,0.2,Math.PI-0.2); x.stroke();
 
- // BIRDS in sky 🕊️
- birds.forEach(b=>{
-   b.x+=b.vx; b.y+=Math.sin(t+b.wing)*0.3; b.wing+=0.3;
-   if(b.x>W+30) b.x=-30;
-   let wx=Math.sin(b.wing)*8;
-   x.strokeStyle="black"; x.lineWidth=2; x.lineCap="round";
-   x.beginPath(); x.moveTo(b.x-8,b.y); x.quadraticCurveTo(b.x-4,b.y+wx, b.x, b.y);
-   x.moveTo(b.x,b.y); x.quadraticCurveTo(b.x+4,b.y+wx, b.x+8,b.y); x.stroke();
- });
+ // BIRDS
+ birds.forEach(b=>{b.x+=b.vx; b.y+=Math.sin(t+b.wing)*0.3; b.wing+=0.3; if(b.x>W+30) b.x=-30; let wx=Math.sin(b.wing)*8; x.strokeStyle="black"; x.lineWidth=2; x.lineCap="round"; x.beginPath(); x.moveTo(b.x-8,b.y); x.quadraticCurveTo(b.x-4,b.y+wx, b.x, b.y); x.moveTo(b.x,b.y); x.quadraticCurveTo(b.x+4,b.y+wx, b.x+8,b.y); x.stroke();});
 
- let hx=W/2-100, hy=H*0.6-160;
+ // HOUSE - SUN WALI SIDE PE (Right side) 🏠
+ let hx=W-320, hy=H*0.6-160;
  x.fillStyle="#FFE4B5"; x.fillRect(hx,hy,200,160); x.strokeStyle="#8B4513"; x.lineWidth=3; x.strokeRect(hx,hy,200,160);
  x.fillStyle="#B22222"; x.beginPath(); x.moveTo(hx-10,hy); x.lineTo(hx+100,hy-70); x.lineTo(hx+210,hy); x.closePath(); x.fill(); x.stroke();
- x.fillStyle="#8B4513"; x.fillRect(hx+70,hy+90,50,70);
+ // HOME SWEET HOME TEXT on Yellow wall
+ x.fillStyle="#D32F2F"; x.font="bold 14px Arial"; x.textAlign="center"; x.fillText("Home Sweet Home", hx+100, hy+35);
+ x.textAlign="left";
+
+ // DOOR OPEN + MAN COMING OUT 🚪🧍‍♂️
+ // Door frame
+ x.fillStyle="#5D4037"; x.fillRect(hx+70,hy+90,50,70);
+ // Door open (half open)
+ let doorOpen= Math.abs(Math.sin(t*0.5))*15;
+ x.fillStyle="#8B4513"; x.beginPath(); x.moveTo(hx+70,hy+90); x.lineTo(hx+70+doorOpen,hy+90); x.lineTo(hx+70+doorOpen,hy+160); x.lineTo(hx+70,hy+160); x.closePath(); x.fill();
+ x.strokeStyle="#3E2723"; x.lineWidth=2; x.strokeRect(hx+70,hy+90,50,70);
+ // Inside dark
+ x.fillStyle="#3E2723"; x.fillRect(hx+71,hy+91,48,68);
+
+ // MAN coming out
+ let manX=hx+75+Math.sin(manStep)*12, manY=hy+110;
+ // legs walking
+ x.strokeStyle="#1565C0"; x.lineWidth=5; x.lineCap="round";
+ x.beginPath(); x.moveTo(manX+8,manY+25); x.lineTo(manX+5+Math.sin(manStep*3)*6, manY+45); x.stroke();
+ x.beginPath(); x.moveTo(manX+16,manY+25); x.lineTo(manX+19+Math.sin(manStep*3+1)*6, manY+45); x.stroke();
+ // body
+ x.fillStyle="#FF5722"; x.fillRect(manX+4, manY+5, 18, 22);
+ // head
+ x.fillStyle="#FFCC80"; x.beginPath(); x.arc(manX+13, manY, 10,0,7); x.fill();
+ // hair
+ x.fillStyle="#3E2723"; x.beginPath(); x.arc(manX+13, manY-5, 10, Math.PI, 0); x.fill();
+ // arms
+ x.strokeStyle="#FFCC80"; x.lineWidth=4; x.beginPath(); x.moveTo(manX+4,manY+10); x.lineTo(manX-2,manY+18); x.stroke();
+ x.beginPath(); x.moveTo(manX+22,manY+10); x.lineTo(manX+28,manY+16); x.stroke();
+ // smile
+ x.strokeStyle="black"; x.lineWidth=1; x.beginPath(); x.arc(manX+13, manY+4, 4, 0.2, Math.PI-0.2); x.stroke();
 
  flowers.forEach(f=>{
    if(f.x==0){f.x=Math.random()*W; f.y=H*0.6+20+Math.random()*(H*0.4-30);}
@@ -39,65 +64,55 @@ function draw(){
    x.fillStyle="yellow"; x.beginPath(); x.arc(f.x,f.y,2,0,7); x.fill();
  });
 
+ // TREES
  let s1=Math.sin(t)*4, tx1=50+s1, ty1=H*0.6;
  x.fillStyle="#5D4037"; x.fillRect(tx1,ty1-190,22,190);
  x.fillStyle="#1B5E20"; x.beginPath(); x.arc(tx1+11,ty1-200,58,0,7); x.fill();
  x.fillStyle="#81C784"; for(let i=0;i<12;i++){let a=(i/12)*Math.PI*2+t; x.beginPath(); x.arc(tx1+11+Math.cos(a)*35, ty1-200+Math.sin(a)*35, 8,0,7); x.fill();}
- let s2=Math.cos(t*1.1)*3, tx2=W-130+s2;
- x.fillStyle="#5D4037"; x.fillRect(tx2,ty1-170,20,170);
- x.fillStyle="#1B5E20"; x.beginPath(); x.arc(tx2+10,ty1-180,52,0,7); x.fill();
- x.fillStyle="#81C784"; for(let i=0;i<10;i++){let a=(i/10)*Math.PI*2+t; x.beginPath(); x.arc(tx2+10+Math.cos(a)*30, ty1-180+Math.sin(a)*30, 7,0,7); x.fill();}
 
- // BENCH
- let benchX=hx+220, benchY=ty1-10;
+ // TAP NEAR TREE - FIXED 💧
+ let tapX=tx1+40, tapY=ty1-50;
+ x.fillStyle="#78909C"; x.fillRect(tapX, tapY, 10, 50);
+ x.fillStyle="#B0BEC5"; x.fillRect(tapX-15, tapY, 40, 12);
+ x.fillStyle="#B0BEC5"; x.beginPath(); x.arc(tapX+5, tapY+6, 12,0,7); x.fill(); x.strokeStyle="#546E7A"; x.lineWidth=2; x.beginPath(); x.arc(tapX+5, tapY+6, 12,0,7); x.stroke();
+ x.fillStyle="#90A4AE"; x.fillRect(tapX+15, tapY+2, 18, 8);
+ // bucket
+ x.fillStyle="#64B5F6"; x.fillRect(tapX-5, tapY+55, 35, 25); x.strokeStyle="#1976D2"; x.lineWidth=2; x.strokeRect(tapX-5, tapY+55, 35, 25);
+ // water inside bucket - filling
+ x.fillStyle="#29B6F6"; x.fillRect(tapX-3, tapY+57, 31, 18+Math.sin(t)*1);
+ // Drops from tap to bucket
+ if(Math.random()<0.2) drops.push({x:tapX+32, y:tapY+10, vy:1.2});
+ drops.forEach((d,i)=>{d.y+=d.vy; d.vy+=0.18; x.fillStyle="#03A9F4"; x.beginPath(); x.arc(d.x, d.y, 4,0,7); x.fill(); if(d.y>tapY+55){drops.splice(i,1); if(Math.random()<0.4) overflowDrops.push({x:tapX+12+Math.random()*10, y:tapY+80, vy:0.5, x2:Math.random()-0.5});}});
+ // Water overflowing from bucket to ground (neeche gir raha)
+ overflowDrops.forEach((d,i)=>{d.y+=d.vy; d.vy+=0.12; d.x+=d.x2; x.fillStyle="rgba(3,169,244,0.7)"; x.beginPath(); x.arc(d.x, d.y, 3,0,7); x.fill(); if(d.y>H) overflowDrops.splice(i,1);});
+ // splash on ground
+ x.fillStyle="rgba(3,169,244,0.4)"; x.beginPath(); x.ellipse(tapX+12, H-2, 18+Math.sin(t*4)*3, 6,0,0,7); x.fill();
+
+ // BENCH - still there
+ let benchX=W/2-180, benchY=ty1-10;
  x.fillStyle="#4E342E"; x.fillRect(benchX+5,benchY+5,8,25); x.fillRect(benchX+67,benchY+5,8,25);
  x.fillStyle="#8D6E63"; x.fillRect(benchX,benchY,80,8); x.strokeStyle="#3E2723"; x.lineWidth=2; x.strokeRect(benchX,benchY,80,8);
- x.fillStyle="#A1887F"; x.fillRect(benchX,benchY-18,80,6); x.strokeRect(benchX,benchY-18,80,6);
- x.fillRect(benchX,benchY-28,80,6); x.strokeRect(benchX,benchY-28,80,6);
+ x.fillStyle="#A1887F"; x.fillRect(benchX,benchY-18,80,6); x.strokeRect(benchX,benchY-18,80,6); x.fillRect(benchX,benchY-28,80,6); x.strokeRect(benchX,benchY-28,80,6);
  x.fillStyle="#4E342E"; x.fillRect(benchX+5,benchY-28,8,33); x.fillRect(benchX+67,benchY-28,8,33);
 
- // BILLI ON BENCH
- let catX=benchX+40, catY=benchY-18, tailWag=Math.sin(t*3)*10;
- x.fillStyle="#FFA726"; x.beginPath(); x.ellipse(catX,catY,24,15,0,0,7); x.fill();
- x.fillStyle="#FFA726"; x.beginPath(); x.arc(catX+18,catY-10,16,0,7); x.fill();
- x.fillStyle="#FFA726"; x.beginPath(); x.moveTo(catX+9,catY-21); x.lineTo(catX+12,catY-30); x.lineTo(catX+18,catY-20); x.fill();
- x.beginPath(); x.moveTo(catX+23,catY-22); x.lineTo(catX+27,catY-31); x.lineTo(catX+31,catY-20); x.fill();
+ // BILLI - ZAMEEN PER (Ground) 🐱
+ let catX=benchX+90, catY=ty1-8, tailWag=Math.sin(t*3)*10;
+ x.fillStyle="#FFA726"; x.beginPath(); x.ellipse(catX,catY,28,18,0,0,7); x.fill();
+ x.fillStyle="#FFA726"; x.beginPath(); x.arc(catX+22,catY-12,18,0,7); x.fill();
+ x.fillStyle="#FFA726"; x.beginPath(); x.moveTo(catX+12,catY-25); x.lineTo(catX+16,catY-35); x.lineTo(catX+22,catY-24); x.fill();
+ x.beginPath(); x.moveTo(catX+28,catY-26); x.lineTo(catX+32,catY-36); x.lineTo(catX+36,catY-24); x.fill();
  let eyeClose=Math.sin(t*2)>0.9?1:0;
- if(eyeClose==0){ x.fillStyle="white"; x.beginPath(); x.arc(catX+14,catY-11,4.5,0,7); x.arc(catX+23,catY-11,4.5,0,7); x.fill(); x.fillStyle="#2E7D32"; x.beginPath(); x.arc(catX+14,catY-11,2,0,7); x.arc(catX+23,catY-11,2,0,7); x.fill(); }
- else { x.strokeStyle="black"; x.lineWidth=2; x.beginPath(); x.moveTo(catX+10,catY-11); x.lineTo(catX+18,catY-11); x.moveTo(catX+19,catY-11); x.lineTo(catX+27,catY-11); x.stroke(); }
- x.fillStyle="pink"; x.beginPath(); x.arc(catX+19,catY-7,1.8,0,7); x.fill();
- x.strokeStyle="#FFA726"; x.lineWidth=8; x.lineCap="round"; x.beginPath(); x.moveTo(catX-22,catY); x.quadraticCurveTo(catX-42+tailWag,catY-10, catX-38,catY-22); x.stroke();
+ if(eyeClose==0){ x.fillStyle="white"; x.beginPath(); x.arc(catX+18,catY-14,5,0,7); x.arc(catX+28,catY-14,5,0,7); x.fill(); x.fillStyle="#2E7D32"; x.beginPath(); x.arc(catX+18,catY-14,2.5,0,7); x.arc(catX+28,catY-14,2.5,0,7); x.fill(); }
+ else { x.strokeStyle="black"; x.lineWidth=2; x.beginPath(); x.moveTo(catX+14,catY-14); x.lineTo(catX+22,catY-14); x.moveTo(catX+24,catY-14); x.lineTo(catX+32,catY-14); x.stroke();}
+ x.fillStyle="pink"; x.beginPath(); x.arc(catX+24,catY-9,2,0,7); x.fill();
+ x.strokeStyle="#FFA726"; x.lineWidth=10; x.lineCap="round"; x.beginPath(); x.moveTo(catX-28,catY); x.quadraticCurveTo(catX-50+tailWag,catY-15, catX-45,catY-30); x.stroke();
 
- // WATER TAP in corner 💧
- let tapX=30, tapY=H-110;
- // pipe
- x.fillStyle="#78909C"; x.fillRect(tapX, tapY, 10, 50);
- x.fillRect(tapX-15, tapY, 40, 12);
- // tap body
- x.fillStyle="#B0BEC5"; x.beginPath(); x.arc(tapX+5, tapY+6, 12,0,7); x.fill();
- x.strokeStyle="#546E7A"; x.lineWidth=2; x.beginPath(); x.arc(tapX+5, tapY+6, 12,0,7); x.stroke();
- // tap mouth
- x.fillStyle="#90A4AE"; x.fillRect(tapX+15, tapY+2, 18, 8);
- // bucket below
- x.fillStyle="#64B5F6"; x.fillRect(tapX-5, tapY+55, 35, 25); x.strokeStyle="#1976D2"; x.lineWidth=2; x.strokeRect(tapX-5, tapY+55, 35, 25);
- x.fillStyle="rgba(100,181,246,0.3)"; x.fillRect(tapX-5, tapY+55, 35, 25);
- // water drops falling - LEAK
- if(Math.random()<0.15) drops.push({x:tapX+32, y:tapY+10, vy:1, life:0});
- drops.forEach((d,i)=>{
-   d.y+=d.vy; d.vy+=0.15; d.life++;
-   x.fillStyle="#03A9F4"; x.beginPath(); x.arc(d.x, d.y, 4,0,7); x.fill();
-   x.fillStyle="white"; x.beginPath(); x.arc(d.x-1, d.y-1, 1.2,0,7); x.fill();
-   if(d.y>tapY+58) {drops.splice(i,1);}
- });
- // small puddle splash
- x.fillStyle="rgba(3,169,244,0.5)"; x.beginPath(); x.arc(tapX+12, tapY+58, 6+Math.sin(t*5)*1,0,7); x.fill();
+ // TEXT - Don't waste water
+ x.fillStyle="rgba(255,255,255,0.9)"; x.fillRect(W-270, H-50, 260, 38); x.strokeStyle="#0288D1"; x.lineWidth=2; x.strokeRect(W-270, H-50, 260, 38);
+ x.fillStyle="#01579B"; x.font="bold 12px Arial"; x.textAlign="left"; x.fillText("Don't waste water,", W-260, H-34);
+ x.font="bold 11px Arial"; x.fillStyle="#0277BD"; x.fillText("Water is Life! 💧", W-260, H-20);
 
- // TEXT - English Message 💙
- x.fillStyle="rgba(255,255,255,0.85)"; x.fillRect(10, H-48, 260, 38); x.strokeStyle="#0288D1"; x.lineWidth=2; x.strokeRect(10, H-48, 260, 38);
- x.fillStyle="#01579B"; x.font="bold 12px Arial"; x.fillText("Don't waste water,", 18, H-32);
- x.font="bold 11px Arial"; x.fillStyle="#0277BD"; x.fillText("Water is Life! 💧", 18, H-18);
-
- falling.forEach(l=>{l.y+=l.vy; l.x+=l.vx+Math.sin(t+l.x)*0.5; if(l.y>H){l.y=H*0.3; l.x=Math.random()*W;} x.fillStyle="rgba(76,175,80,0.8)"; x.beginPath(); x.ellipse(l.x,l.y,l.r,l.r*0.6,Math.sin(t+l.x),0,7); x.fill();});
+ falling.forEach(l=>{l.y+=l.vy; l.x+=l.vx+Math.sin(t+l.x)*0.5; if(l.y>H){l.y=H*0.3; l.x=Math.random()*W;} x.fillStyle="rgba(76,175,80,0.7)"; x.beginPath(); x.ellipse(l.x,l.y,l.r,l.r*0.6,Math.sin(t+l.x),0,7); x.fill();});
  requestAnimationFrame(draw);
 }
 draw();

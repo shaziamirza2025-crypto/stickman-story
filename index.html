@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pani Bachao - Big Girl</title>
+<title>Pani Bachao - Real Tree</title>
 <style>
 body{margin:0;background:#87CEEB;overflow:hidden;font-family:cursive}
 canvas{width:100vw;height:100vh;display:block}
@@ -84,71 +84,59 @@ function drawCanvasMessage(){
   X.fillStyle='#4CAF50'; X.font='bold 12px Arial'; X.fillText('✅ Nal Band Ho Gaya!', C.width/2, my+120);
 }
 
-// BIG LIVING GIRL - 2x SIZE
-function drawLivingGirl(gx, gy){
-  let S=2.1; // SCALE - bara size
-  // Shadow
-  X.fillStyle='rgba(0,0,0,0.15)'; X.beginPath(); X.ellipse(gx, gy+32*S, 24*S, 7*S, 0, 0, 6.28); X.fill();
+// REAL TALL TREE - LIVING THING JASA
+function drawRealTree(tx, baseY){
+  let sway=Math.sin(t*0.03)*3;
+  let trunkH=210, trunkW=22;
   
-  // Legs
-  X.fillStyle='#FFDAB9';
-  X.fillRect(gx-10*S, gy+10*S, 8*S, 22*S); X.fillRect(gx+4*S, gy+10*S, 8*S, 22*S);
-  // Shoes - bigger pink
-  X.fillStyle='#FF1493'; 
-  X.beginPath(); X.ellipse(gx-6*S, gy+34*S, 10*S, 5*S, 0, 0, 6.28); X.fill();
-  X.beginPath(); X.ellipse(gx+9*S, gy+34*S, 10*S, 5*S, 0, 0, 6.28); X.fill();
-  X.fillStyle='white'; X.beginPath(); X.arc(gx-6*S, gy+33*S, 2.5*S, 0, 6.28); X.arc(gx+9*S, gy+33*S, 2.5*S, 0, 6.28); X.fill();
+  // Shadow on ground
+  X.fillStyle='rgba(0,0,0,0.18)'; X.beginPath(); X.ellipse(tx, baseY+4, 45, 10, 0, 0, 6.28); X.fill();
   
-  // Dress - big cute frock
-  X.fillStyle='#FF69B4';
-  X.beginPath(); X.moveTo(gx-18*S, gy-10*S); X.lineTo(gx+18*S, gy-10*S); X.lineTo(gx+24*S, gy+16*S); X.lineTo(gx-24*S, gy+16*S); X.closePath(); X.fill();
-  X.fillStyle='#E91E63'; X.fillRect(gx-18*S, gy-10*S, 36*S, 5*S);
-  X.fillStyle='#FFF'; X.beginPath(); X.arc(gx, gy-7*S, 4*S, 0, 6.28); X.fill();
-  X.fillStyle='#FFF'; X.beginPath(); X.arc(gx, gy, 3*S, 0, 6.28); X.fill();
+  // Trunk - realistic with gradient
+  let trunkGrad=X.createLinearGradient(tx-trunkW/2,0,tx+trunkW/2,0);
+  trunkGrad.addColorStop(0,'#3E2723'); trunkGrad.addColorStop(0.3,'#5D4037'); trunkGrad.addColorStop(0.7,'#6D4C41'); trunkGrad.addColorStop(1,'#3E2723');
+  X.fillStyle=trunkGrad;
+  X.fillRect(tx-trunkW/2, baseY-trunkH, trunkW, trunkH);
+  // Bark lines
+  X.strokeStyle='#3E2723'; X.lineWidth=1; X.globalAlpha=0.4;
+  for(let i=0;i<6;i++){ X.beginPath(); X.moveTo(tx-trunkW/2+4, baseY-trunkH+20+i*32); X.lineTo(tx+trunkW/2-4, baseY-trunkH+28+i*32); X.stroke(); }
+  X.globalAlpha=1;
   
-  // Arms - thicker
-  X.fillStyle='#FFDAB9';
-  X.beginPath(); X.ellipse(gx-20*S, gy, 5*S, 12*S, -0.3, 0, 6.28); X.fill();
-  X.beginPath(); X.ellipse(gx+20*S, gy, 5*S, 12*S, 0.3, 0, 6.28); X.fill();
-  
-  // Neck
-  X.fillStyle='#FFDAB9'; X.fillRect(gx-5*S, gy-18*S, 10*S, 10*S);
-  
-  // Face - big round
-  X.fillStyle='#FFDAB9'; X.beginPath(); X.arc(gx, gy-32*S, 22*S, 0, 6.28); X.fill();
-  
-  // Hair - big
+  // Big branches
   X.fillStyle='#5D4037';
-  X.beginPath(); X.arc(gx, gy-38*S, 24*S, Math.PI, Math.PI*2); X.fill();
-  X.beginPath(); X.ellipse(gx-14*S, gy-32*S, 8*S, 13*S, -0.2, 0, 6.28); X.fill();
-  X.beginPath(); X.ellipse(gx+14*S, gy-32*S, 8*S, 13*S, 0.2, 0, 6.28); X.fill();
-  X.beginPath(); X.ellipse(gx+22*S, gy-28*S, 10*S, 8*S, 0.4, 0, 6.28); X.fill();
-  X.fillStyle='#4E342E'; X.beginPath(); X.ellipse(gx, gy-44*S, 20*S, 9*S, 0, 0, 6.28); X.fill();
+  X.beginPath(); X.moveTo(tx, baseY-trunkH*0.7); X.lineTo(tx-35+sway, baseY-trunkH*0.85); X.lineTo(tx-30+sway, baseY-trunkH*0.82); X.lineTo(tx+2, baseY-trunkH*0.68); X.fill();
+  X.beginPath(); X.moveTo(tx, baseY-trunkH*0.6); X.lineTo(tx+38+sway, baseY-trunkH*0.78); X.lineTo(tx+33+sway, baseY-trunkH*0.75); X.lineTo(tx+2, baseY-trunkH*0.58); X.fill();
   
-  // Bow - big
-  X.fillStyle='#FF1493'; 
-  X.beginPath(); X.ellipse(gx+18*S, gy-42*S, 7*S, 4*S, 0, 0, 6.28); X.fill();
-  X.beginPath(); X.ellipse(gx+24*S, gy-42*S, 7*S, 4*S, 0, 0, 6.28); X.fill();
-  X.beginPath(); X.arc(gx+21*S, gy-42*S, 3.5*S, 0, 6.28); X.fill();
+  // Foliage - 3 layers big, realistic
+  let layers=[
+    {y: baseY-trunkH-20, r: 65, color:'#2E7D32'},
+    {y: baseY-trunkH-55, r: 75, color:'#388E3C'},
+    {y: baseY-trunkH-95, r: 60, color:'#43A047'},
+    {y: baseY-trunkH-125, r: 45, color:'#4CAF50'},
+  ];
   
-  // Eyes - big cute
-  X.fillStyle='white'; 
-  X.beginPath(); X.ellipse(gx-7*S, gy-34*S, 7*S, 9*S, 0, 0, 6.28); X.fill();
-  X.beginPath(); X.ellipse(gx+7*S, gy-34*S, 7*S, 9*S, 0, 0, 6.28); X.fill();
-  X.fillStyle='#3E2723'; 
-  X.beginPath(); X.arc(gx-7*S, gy-32*S, 4*S, 0, 6.28); X.fill();
-  X.beginPath(); X.arc(gx+7*S, gy-32*S, 4*S, 0, 6.28); X.fill();
-  X.fillStyle='white'; 
-  X.beginPath(); X.arc(gx-5.5*S, gy-36*S, 2*S, 0, 6.28); X.arc(gx+8.5*S, gy-36*S, 2*S, 0, 6.28); X.fill();
+  for(let layer of layers){
+    let lx=tx+sway*0.5, ly=layer.y;
+    // Main blob
+    X.fillStyle=layer.color;
+    X.beginPath(); X.arc(lx, ly, layer.r, 0, 6.28); X.fill();
+    // Extra blobs for natural look
+    X.beginPath(); X.arc(lx-18, ly+8, layer.r*0.7, 0, 6.28); X.fill();
+    X.beginPath(); X.arc(lx+20, ly+5, layer.r*0.65, 0, 6.28); X.fill();
+    X.beginPath(); X.arc(lx, ly-15, layer.r*0.6, 0, 6.28); X.fill();
+    
+    // Light green highlights - living effect
+    X.fillStyle='rgba(129,199,132,0.5)';
+    X.beginPath(); X.arc(lx-10, ly-10, layer.r*0.35, 0, 6.28); X.fill();
+    X.beginPath(); X.arc(lx+12, ly-8, layer.r*0.25, 0, 6.28); X.fill();
+  }
   
-  // Blush - visible
-  X.fillStyle='rgba(255,105,180,0.6)'; 
-  X.beginPath(); X.arc(gx-13*S, gy-27*S, 4.5*S, 0, 6.28); X.arc(gx+13*S, gy-27*S, 4.5*S, 0, 6.28); X.fill();
-  
-  // Smile - big
-  let smileOpen=Math.abs(Math.sin(t*0.4+1))*3+2;
-  X.fillStyle='#C2185B'; 
-  X.beginPath(); X.ellipse(gx, gy-22*S, 5*S, smileOpen*S, 0, 0, 6.28); X.fill();
+  // Small fruits/birds on tree
+  X.fillStyle='#FFEB3B';
+  for(let i=0;i<3;i++){
+    let fx=tx+Math.sin(t*0.02+i)*30, fy=baseY-trunkH-40-i*25;
+    X.beginPath(); X.arc(fx, fy, 3, 0, 6.28); X.fill();
+  }
 }
 
 function draw(){
@@ -219,8 +207,8 @@ for(let i=waterParticles.length-1;i>=0;i--){
 }
 if(!tapOpen && waterParticles.length>0 && t%3==0) waterParticles.pop();
 
-// BENCH BIGGER FOR BIG GIRL
-let bx=110, by=C.height-155;
+// BENCH ONLY - NO GIRL - STYLISH
+let bx=115, by=C.height-155;
 X.fillStyle='rgba(0,0,0,0.15)'; X.beginPath(); X.ellipse(bx+75,by+60,75,10,0,0,6.28); X.fill();
 X.fillStyle='#2C3E50'; 
 X.fillRect(bx+10,by+18,12,42); X.fillRect(bx+130,by+18,12,42);
@@ -239,9 +227,8 @@ X.strokeStyle='#3E2723'; X.lineWidth=4; X.lineCap='round';
 X.beginPath(); X.moveTo(bx-5,by-30); X.quadraticCurveTo(bx-12,by-10,bx-5,by+10); X.stroke();
 X.beginPath(); X.moveTo(bx+155,by-30); X.quadraticCurveTo(bx+162,by-10,bx+155,by+10); X.stroke();
 
-// BIG GIRL - AB BARI DIKHEGI
-let girlX=bx+75, girlY=by-5;
-drawLivingGirl(girlX, girlY);
+// BIG TALL REAL TREE - LIVING
+drawRealTree(35, C.height-80);
 
 let cy=C.height-88;
 let catWalk=Math.sin(step*1.5)*6; let tailWag=Math.sin(t)*1.3;
@@ -260,11 +247,11 @@ let sy2=C.height-80;
 if(storyState==0){ if(sx2 < tapX-60){ sx2+=1.9; } else { storyState=1; closeProgress=0; } }
 if(storyState==1){ closeProgress+=0.04; if(closeProgress>=1){ tapOpen=false; showCanvasMsg=true; storyState=2; } }
 let leg1=Math.sin(step)*16, leg2=Math.sin(step+Math.PI)*16;
-let reachingArm = storyState==1 ? 18+closeProgress*32 : 0;
 X.strokeStyle='black';X.lineWidth=3.4;
 X.beginPath();X.arc(sx2,sy2-88,19,0,6.28);X.stroke();
 X.beginPath();X.moveTo(sx2,sy2-69);X.lineTo(sx2,sy2-32);X.stroke();
 if(storyState==1){
+  let reachingArm=18+closeProgress*32;
   X.beginPath();X.moveTo(sx2,sy2-57);X.lineTo(sx2+reachingArm,sy2-42);X.stroke();
   X.beginPath();X.moveTo(sx2,sy2-57);X.lineTo(sx2-16,sy2-42);X.stroke();
 } else {

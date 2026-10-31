@@ -1,139 +1,147 @@
-<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>Save Water Story</title><style>*{margin:0;padding:0}body{overflow:hidden;background:#87CEEB}canvas{display:block;width:100vw;height:100vh}</style></head><body><canvas id="c"></canvas><script>
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>Fixed Story</title><style>*{margin:0;padding:0}body{overflow:hidden;background:#87CEEB}canvas{display:block;width:100vw;height:100vh}</style></head><body><canvas id="c"></canvas><script>
 const cv=document.getElementById('c'), x=cv.getContext('2d');
 function resize(){cv.width=innerWidth; cv.height=innerHeight;} addEventListener('resize',resize); resize();
 let t=0, birds=[]; for(let i=0;i<5;i++) birds.push({x:Math.random()*cv.width, y:50+Math.random()*120, vx:0.6+Math.random()*0.8, wing:Math.random()*10});
 let flowers=[]; for(let i=0;i<50;i++) flowers.push({x:0, y:0, type:Math.floor(Math.random()*3)});
-let drops=[], overflow=[], storyTime=0, tapOpen=true, tapClosing=false;
+let drops=[], overflow=[], storyTime=0;
 
 function draw(){
- t+=0.03; storyTime+=0.015; let W=cv.width, H=cv.height;
+ t+=0.03; storyTime+=0.016; let W=cv.width, H=cv.height;
  x.fillStyle="#87CEEB"; x.fillRect(0,0,W,H*0.6);
  x.fillStyle="#7CFC00"; x.fillRect(0,H*0.6,W,H*0.4);
- // sun
  let sunX=W-110,sunY=110;
  x.strokeStyle="rgba(255,215,0,0.8)"; x.lineWidth=4; for(let i=0;i<12;i++){let a=(i/12)*Math.PI*2+t; x.beginPath(); x.moveTo(sunX+Math.cos(a)*42,sunY+Math.sin(a)*42); x.lineTo(sunX+Math.cos(a)*68,sunY+Math.sin(a)*68); x.stroke();}
  x.fillStyle="#FFD700"; x.beginPath(); x.arc(sunX,sunY,42,0,7); x.fill();
  x.fillStyle="white"; x.beginPath(); x.arc(sunX-11,sunY-7,8,0,7); x.arc(sunX+11,sunY-7,8,0,7); x.fill();
  x.fillStyle="black"; x.beginPath(); x.arc(sunX-11+Math.sin(t*2)*2,sunY-6,3,0,7); x.arc(sunX+11+Math.sin(t*2)*2,sunY-6,3,0,7); x.fill();
  x.strokeStyle="black"; x.lineWidth=2.5; x.beginPath(); x.arc(sunX,sunY+11,13,0.2,Math.PI-0.2); x.stroke();
-
  birds.forEach(b=>{b.x+=b.vx; b.y+=Math.sin(t+b.wing)*0.3; b.wing+=0.3; if(b.x>W+30) b.x=-30; let wx=Math.sin(b.wing)*8; x.strokeStyle="black"; x.lineWidth=2; x.lineCap="round"; x.beginPath(); x.moveTo(b.x-8,b.y); x.quadraticCurveTo(b.x-4,b.y+wx, b.x, b.y); x.moveTo(b.x,b.y); x.quadraticCurveTo(b.x+4,b.y+wx, b.x+8,b.y); x.stroke();});
 
- // positions
  let hx=W-320, hy=H*0.6-160, tx1=50, ty1=H*0.6;
- let tapX=tx1+40, tapY=ty1-50;
+ let tapX=tx1+45, tapY=ty1-60;
 
- // house sun side
  x.fillStyle="#FFE4B5"; x.fillRect(hx,hy,200,160); x.strokeStyle="#8B4513"; x.lineWidth=3; x.strokeRect(hx,hy,200,160);
  x.fillStyle="#B22222"; x.beginPath(); x.moveTo(hx-10,hy); x.lineTo(hx+100,hy-70); x.lineTo(hx+210,hy); x.closePath(); x.fill(); x.stroke();
  x.fillStyle="#D32F2F"; x.font="bold 14px Arial"; x.textAlign="center"; x.fillText("Home Sweet Home", hx+100, hy+35); x.textAlign="left";
- x.fillStyle="#5D4037"; x.fillRect(hx+70,hy+90,50,70);
- x.fillStyle="#3E2723"; x.fillRect(hx+71,hy+91,48,68);
+ x.fillStyle="#5D4037"; x.fillRect(hx+70,hy+90,50,70); x.fillStyle="#3E2723"; x.fillRect(hx+71,hy+91,48,68);
 
- // flowers
  flowers.forEach(f=>{if(f.x==0){f.x=Math.random()*W; f.y=H*0.6+20+Math.random()*(H*0.4-30);} x.strokeStyle="#2E7D32"; x.lineWidth=2; x.beginPath(); x.moveTo(f.x,f.y); x.lineTo(f.x,f.y+12); x.stroke(); x.fillStyle=f.type==0?"#FF69B4":f.type==1?"#FF0000":"#FFD700"; x.beginPath(); x.arc(f.x,f.y,6,0,7); x.fill();});
 
- // tree
  x.fillStyle="#5D4037"; x.fillRect(tx1,ty1-190,22,190);
  x.fillStyle="#1B5E20"; x.beginPath(); x.arc(tx1+11,ty1-200,58,0,7); x.fill();
  x.fillStyle="#81C784"; for(let i=0;i<10;i++){let a=(i/10)*Math.PI*2+t; x.beginPath(); x.arc(tx1+11+Math.cos(a)*35, ty1-200+Math.sin(a)*35, 7,0,7); x.fill();}
 
- // TAP
- x.fillStyle="#78909C"; x.fillRect(tapX, tapY, 10, 50);
- x.fillStyle="#B0BEC5"; x.fillRect(tapX-15, tapY, 40, 12);
- x.fillStyle="#B0BEC5"; x.beginPath(); x.arc(tapX+5, tapY+6, 12,0,7); x.fill(); x.strokeStyle="#546E7A"; x.lineWidth=2; x.beginPath(); x.arc(tapX+5, tapY+6, 12,0,7); x.stroke();
- x.fillStyle="#90A4AE"; x.fillRect(tapX+15, tapY+2, 18, 8);
- x.fillStyle="#64B5F6"; x.fillRect(tapX-5, tapY+55, 35, 25); x.strokeStyle="#1976D2"; x.lineWidth=2; x.strokeRect(tapX-5, tapY+55, 35, 25);
- x.fillStyle="#29B6F6"; x.fillRect(tapX-3, tapY+57, 31, 18);
+ // BENCH - Khali park mein, beech mein 🪑
+ let benchX=W/2-100, benchY=ty1-20;
+ x.fillStyle="rgba(0,0,0,0.15)"; x.beginPath(); x.ellipse(benchX+40, benchY+30, 45, 6, 0,0,7); x.fill();
+ x.fillStyle="#4E342E"; x.fillRect(benchX+5,benchY+5,8,25); x.fillRect(benchX+67,benchY+5,8,25);
+ x.fillStyle="#8D6E63"; x.fillRect(benchX,benchY,80,8); x.strokeStyle="#3E2723"; x.lineWidth=2; x.strokeRect(benchX,benchY,80,8);
+ x.fillStyle="#A1887F"; x.fillRect(benchX,benchY-18,80,6); x.strokeRect(benchX,benchY-18,80,6); x.fillRect(benchX,benchY-28,80,6); x.strokeRect(benchX,benchY-28,80,6);
+ x.fillStyle="#4E342E"; x.fillRect(benchX+5,benchY-28,8,33); x.fillRect(benchX+67,benchY-28,8,33);
 
- // STORY LOGIC - Man & Cat movement
- let loop = storyTime % 16; // 16 sec loop
- let manX, manY=hy+110, catX, catY=ty1-8;
- 
- // Man: House -> Tap -> Close -> Back
- if(loop < 5){ // walking to tap
-   let p = loop/5;
-   manX = hx+75 + (tapX - (hx+75))*p;
-   tapOpen = true;
- } else if(loop < 6){ // closing tap
-   manX = tapX+10;
-   tapClosing = true;
-   tapOpen = false;
-   if(Math.random()<0.5) tapOpen=false;
- } else if(loop < 11){ // going back to house
-   let p = (loop-6)/5;
-   manX = tapX+10 + ((hx+75) - (tapX+10))*p;
-   tapOpen = false;
+ // BETTER & ZINDA TAP - shiny metallic 💧✨
+ // wall connection
+ x.fillStyle="#607D8B"; x.fillRect(tapX-25, tapY, 30, 14); x.strokeStyle="#455A64"; x.lineWidth=2; x.strokeRect(tapX-25, tapY, 30, 14);
+ // pipe vertical
+ x.fillStyle="#90A4AE"; x.fillRect(tapX, tapY+8, 12, 55); x.fillStyle="#B0BEC5"; x.fillRect(tapX+2, tapY+8, 4, 55);
+ // tap head shiny
+ x.fillStyle="#CFD8DC"; x.beginPath(); x.arc(tapX+6, tapY+6, 14,0,7); x.fill();
+ x.fillStyle="#ECEFF1"; x.beginPath(); x.arc(tapX+2, tapY+2, 4,0,7); x.fill();
+ x.strokeStyle="#546E7A"; x.lineWidth=2.5; x.beginPath(); x.arc(tapX+6, tapY+6, 14,0,7); x.stroke();
+ // handle
+ x.fillStyle="#37474F"; x.fillRect(tapX-2, tapY-8, 16, 6); x.fillStyle="#78909C"; x.fillRect(tapX-2, tapY-10, 16, 3);
+ // mouth - 3D
+ x.fillStyle="#78909C"; x.fillRect(tapX+10, tapY+8, 20, 12); x.fillStyle="#546E7A"; x.fillRect(tapX+10, tapY+18, 20, 2);
+ x.fillStyle="#263238"; x.beginPath(); x.arc(tapX+30, tapY+14, 6,0,7); x.fill();
+ x.fillStyle="#03A9F4"; x.globalAlpha=0.6; x.beginPath(); x.arc(tapX+30, tapY+14, 4,0,7); x.fill(); x.globalAlpha=1;
+ // bucket
+ x.fillStyle="#64B5F6"; x.fillRect(tapX-5, tapY+63, 38, 28); x.strokeStyle="#1976D2"; x.lineWidth=2.5; x.strokeRect(tapX-5, tapY+63, 38, 28);
+ x.fillStyle="#90CAF9"; x.fillRect(tapX-3, tapY+63, 34, 4);
+
+ // STORY TIMELINE - 18 sec loop
+ let loop = storyTime % 18;
+ let manX, manState="", catX, catSitting=false;
+
+ if(loop < 6){ // Man at home, water leaking
+   manX = hx+75; manState="home";
+ } else if(loop < 10){ // Man walking to tap
+   let p = (loop-6)/4; manX = hx+75 + (tapX+15 - (hx+75))*p; manState="walking";
+ } else if(loop < 11.5){ // Closing
+   manX = tapX+15; manState="closing";
+ } else if(loop < 16){ // Going back
+   let p = (loop-11.5)/4.5; manX = tapX+15 + ((hx+75) - (tapX+15))*p; manState="goingback";
+ } else { manX = hx+75; manState="home"; }
+
+ // Cat: Tap se Ghar ke paas ja ke baith jati
+ if(loop < 5){
+   let p = loop/5; catX = tapX+60 + ((hx-80) - (tapX+60))*p; catSitting=false;
+ } else if(loop < 16){
+   catX = hx-80; catSitting=true;
  } else {
-   manX = hx+75;
-   tapOpen = false;
-   if(loop > 15.5){ tapOpen=true; } // restart water
+   let p = (loop-16)/2; catX = hx-80 + ((tapX+60) - (hx-80))*p; catSitting=false;
  }
 
- // Cat: Tap -> House (opposite)
- if(loop < 8){
-   let p = loop/8;
-   catX = tapX+50 + ((hx-60) - (tapX+50))*p;
+ let isTapOpen = loop < 11; // Tap open till man closes
+
+ // Water handling - PROPER STOP
+ if(isTapOpen){
+   if(Math.random()<0.35) drops.push({x:tapX+30, y:tapY+20, vy:1+Math.random()*1.5});
+   if(Math.random()<0.25) overflow.push({x:tapX+5+Math.random()*20, y:tapY+91, vy:0.5+Math.random()*1.2, vx:(Math.random()-0.5)*1});
+ } // else no new drops = band!
+
+ drops.forEach((d,i)=>{d.y+=d.vy; d.vy+=0.2; x.fillStyle="#0288D1"; x.beginPath(); x.arc(d.x, d.y, 4.5,0,7); x.fill(); x.fillStyle="white"; x.beginPath(); x.arc(d.x-1, d.y-1,1,0,7); x.fill(); if(d.y>tapY+63){drops.splice(i,1); x.fillStyle="rgba(2,136,209,0.4)"; x.beginPath(); x.arc(d.x, tapY+88, 4,0,7); x.fill();}});
+ overflow.forEach((d,i)=>{d.y+=d.vy; d.vy+=0.15; d.x+=d.vx; x.fillStyle="rgba(3,169,244,0.8)"; x.beginPath(); x.arc(d.x, d.y, 3.5,0,7); x.fill(); if(d.y>H) overflow.splice(i,1);});
+
+ // MAN DRAW
+ let walkBob = manState.includes("walking") || manState=="goingback" ? Math.abs(Math.sin(t*10))*4 : 0;
+ let legSwing = manState.includes("walking") || manState=="goingback" ? Math.sin(t*12)*10 : 0;
+ x.strokeStyle="#1565C0"; x.lineWidth=6; x.lineCap="round";
+ x.beginPath(); x.moveTo(manX+8,hy+110+25+walkBob); x.lineTo(manX+5+legSwing, hy+110+45+walkBob); x.stroke();
+ x.beginPath(); x.moveTo(manX+16,hy+110+25+walkBob); x.lineTo(manX+19-legSwing, hy+110+45+walkBob); x.stroke();
+ x.fillStyle="#FF5722"; x.fillRect(manX+4, hy+110+5+walkBob, 18, 24);
+ x.fillStyle="#FFCC80"; x.beginPath(); x.arc(manX+13, hy+110+walkBob, 11,0,7); x.fill();
+ x.fillStyle="#3E2723"; x.beginPath(); x.arc(manX+13, hy+110-5+walkBob, 11, Math.PI, 0); x.fill();
+ if(manState=="closing"){
+   x.strokeStyle="#FFCC80"; x.lineWidth=5; x.beginPath(); x.moveTo(manX+22,hy+110+12+walkBob); x.lineTo(tapX+6, tapY+2); x.stroke();
+   x.fillStyle="white"; x.beginPath(); x.arc(manX+13, hy+110+3+walkBob, 2,0,7); x.fill();
  } else {
-   let p = (loop-8)/8;
-   catX = (hx-60) + ((tapX+50) - (hx-60))*p;
+   x.strokeStyle="#FFCC80"; x.lineWidth=4; x.beginPath(); x.moveTo(manX+4,hy+110+12+walkBob); x.lineTo(manX-2,hy+110+20+walkBob); x.stroke();
+   x.beginPath(); x.moveTo(manX+22,hy+110+12+walkBob); x.lineTo(manX+28,hy+110+18+walkBob); x.stroke();
  }
 
- // water logic
- if(tapOpen){
-   if(Math.random()<0.25) drops.push({x:tapX+32, y:tapY+10, vy:1.2+Math.random()});
-   if(Math.random()<0.3) overflow.push({x:tapX+12+Math.random()*10, y:tapY+80, vy:0.8+Math.random(), vx:(Math.random()-0.5)*1.2});
+ // CAT - Near house, sitting
+ let catY=ty1-10, tailWag=Math.sin(t*3)*10, catBob = catSitting?0:Math.abs(Math.sin(t*8))*2;
+ if(catSitting){
+   x.fillStyle="#FFA726"; x.beginPath(); x.ellipse(catX,catY,30,20,0,0,7); x.fill();
+   x.fillStyle="#FFA726"; x.beginPath(); x.ellipse(catX,catY+14,22,10,0,0,7); x.fill();
+   x.fillStyle="#FFA726"; x.beginPath(); x.arc(catX+20,catY-10,17,0,7); x.fill();
+   x.fillStyle="#FFA726"; x.beginPath(); x.moveTo(catX+10,catY-22); x.lineTo(catX+13,catY-33); x.lineTo(catX+19,catY-21); x.fill();
+   x.beginPath(); x.moveTo(catX+25,catY-23); x.lineTo(catX+29,catY-34); x.lineTo(catX+33,catY-21); x.fill();
+   x.fillStyle="white"; x.beginPath(); x.arc(catX+16,catY-11,4,0,7); x.arc(catX+26,catY-11,4,0,7); x.fill();
+   x.fillStyle="#2E7D32"; x.beginPath(); x.arc(catX+16,catY-11,2,0,7); x.arc(catX+26,catY-11,2,0,7); x.fill();
+   x.strokeStyle="#FFA726"; x.lineWidth=8; x.lineCap="round"; x.beginPath(); x.moveTo(catX-28,catY+8); x.quadraticCurveTo(catX-45,catY+12, catX-35,catY-5); x.stroke();
  } else {
-   if(tapClosing && Math.random()<0.05) drops.push({x:tapX+32, y:tapY+10, vy:0.5});
+   x.fillStyle="#FFA726"; x.beginPath(); x.ellipse(catX,catY+catBob,28,16,0,0,7); x.fill();
+   x.fillStyle="#FFA726"; x.beginPath(); x.ellipse(catX-12+Math.sin(t*8)*2, catY+12+catBob, 6,8,0,0,7); x.fill();
+   x.beginPath(); x.ellipse(catX+12+Math.sin(t*8+1)*2, catY+12+catBob, 6,8,0,0,7); x.fill();
+   x.fillStyle="#FFA726"; x.beginPath(); x.arc(catX+22,catY-10+catBob,17,0,7); x.fill();
+   x.fillStyle="white"; x.beginPath(); x.arc(catX+18,catY-12+catBob,4.5,0,7); x.arc(catX+27,catY-12+catBob,4.5,0,7); x.fill();
+   x.strokeStyle="#FFA726"; x.lineWidth=9; x.lineCap="round"; x.beginPath(); x.moveTo(catX-26,catY+catBob); x.quadraticCurveTo(catX-48+tailWag,catY-12+catBob, catX-42,catY-26+catBob); x.stroke();
  }
 
- drops.forEach((d,i)=>{d.y+=d.vy; d.vy+=0.18; x.fillStyle="#03A9F4"; x.beginPath(); x.arc(d.x, d.y, 4,0,7); x.fill(); if(d.y>tapY+55){drops.splice(i,1);}});
- overflow.forEach((d,i)=>{d.y+=d.vy; d.vy+=0.12; d.x+=d.vx; x.fillStyle="rgba(3,169,244,0.7)"; x.beginPath(); x.arc(d.x, d.y, 3,0,7); x.fill(); if(d.y>H) overflow.splice(i,1);});
- x.fillStyle="rgba(3,169,244,0.4)"; x.beginPath(); x.ellipse(tapX+12, H-2, 18+Math.sin(t*4)*2, 6,0,0,7); x.fill();
-
- // MAN DRAW with walking animation
- let walkBob = Math.abs(Math.sin(manX*0.1 + t*4))*3;
- let legSwing = Math.sin(t*8)*8;
- x.strokeStyle="#1565C0"; x.lineWidth=5; x.lineCap="round";
- x.beginPath(); x.moveTo(manX+8,manY+25+walkBob); x.lineTo(manX+5+legSwing, manY+45+walkBob); x.stroke();
- x.beginPath(); x.moveTo(manX+16,manY+25+walkBob); x.lineTo(manX+19-legSwing, manY+45+walkBob); x.stroke();
- x.fillStyle="#FF5722"; x.fillRect(manX+4, manY+5+walkBob, 18, 22);
- x.fillStyle="#FFCC80"; x.beginPath(); x.arc(manX+13, manY+walkBob, 10,0,7); x.fill();
- x.fillStyle="#3E2723"; x.beginPath(); x.arc(manX+13, manY-5+walkBob, 10, Math.PI, 0); x.fill();
- // hand reaching to tap when closing
- if(loop>=5 && loop<6){
-   x.strokeStyle="#FFCC80"; x.lineWidth=4; x.beginPath(); x.moveTo(manX+20,manY+10+walkBob); x.lineTo(tapX+8,tapY+6); x.stroke();
- } else {
-   x.strokeStyle="#FFCC80"; x.lineWidth=4; x.beginPath(); x.moveTo(manX+4,manY+10+walkBob); x.lineTo(manX-2,manY+18+walkBob); x.stroke();
-   x.beginPath(); x.moveTo(manX+22,manY+10+walkBob); x.lineTo(manX+28,manY+16+walkBob); x.stroke();
- }
-
- // CAT DRAW walking
- let catBob = Math.abs(Math.sin(catX*0.08 + t*5))*2;
- let tailWag=Math.sin(t*4)*12;
- x.fillStyle="#FFA726"; x.beginPath(); x.ellipse(catX,catY+catBob,28,16,0,0,7); x.fill();
- // legs walking
- x.fillStyle="#FFA726"; x.beginPath(); x.ellipse(catX-12+Math.sin(t*8)*2, catY+12+catBob, 6,8,0,0,7); x.fill();
- x.beginPath(); x.ellipse(catX+12+Math.sin(t*8+1)*2, catY+12+catBob, 6,8,0,0,7); x.fill();
- x.fillStyle="#FFA726"; x.beginPath(); x.arc(catX+22,catY-10+catBob,17,0,7); x.fill();
- x.fillStyle="#FFA726"; x.beginPath(); x.moveTo(catX+12,catY-23+catBob); x.lineTo(catX+15,catY-32+catBob); x.lineTo(catX+21,catY-22+catBob); x.fill();
- x.beginPath(); x.moveTo(catX+27,catY-24+catBob); x.lineTo(catX+31,catY-33+catBob); x.lineTo(catX+35,catY-22+catBob); x.fill();
- let eyeClose=Math.sin(t*2)>0.9?1:0;
- if(eyeClose==0){ x.fillStyle="white"; x.beginPath(); x.arc(catX+18,catY-12+catBob,4.5,0,7); x.arc(catX+27,catY-12+catBob,4.5,0,7); x.fill(); x.fillStyle="#2E7D32"; x.beginPath(); x.arc(catX+18,catY-12+catBob,2,0,7); x.arc(catX+27,catY-12+catBob,2,0,7); x.fill(); }
- x.strokeStyle="#FFA726"; x.lineWidth=9; x.lineCap="round"; x.beginPath(); x.moveTo(catX-26,catY+catBob); x.quadraticCurveTo(catX-48+tailWag,catY-12+catBob, catX-42,catY-26+catBob); x.stroke();
-
- // FLASHING TEXT near TAP 💧⚡
- let flash = Math.sin(t*4) > 0 ? 1 : 0.3;
- if(tapOpen){
+ // TEXT - Thora oper + Flash near tap ⚡
+ if(isTapOpen){
+   let flash = Math.sin(t*5)>0 ? 1 : 0.4;
    x.globalAlpha=flash;
-   x.fillStyle="#FF0000"; x.fillRect(tapX+60, tapY-15, 180, 42);
-   x.strokeStyle="yellow"; x.lineWidth=3; x.strokeRect(tapX+60, tapY-15, 180, 42);
-   x.fillStyle="white"; x.font="bold 11px Arial"; x.fillText("Don't waste water!", tapX+68, tapY+2);
-   x.font="bold 12px Arial"; x.fillText("Water is Life! 💧", tapX+68, tapY+18);
+   x.fillStyle="#D32F2F"; x.fillRect(tapX+65, tapY-50, 185, 44);
+   x.strokeStyle="yellow"; x.lineWidth=3; x.strokeRect(tapX+65, tapY-50, 185, 44);
+   x.fillStyle="white"; x.font="bold 11px Arial"; x.fillText("⚠️ Don't waste water!", tapX+70, tapY-32);
+   x.font="bold 12px Arial"; x.fillText("Water is Life! 💧", tapX+70, tapY-14);
    x.globalAlpha=1;
  } else {
-   x.fillStyle="rgba(255,255,255,0.7)"; x.fillRect(tapX+60, tapY-15, 180, 28);
-   x.fillStyle="#2E7D32"; x.font="bold 12px Arial"; x.fillText("Good! Tap Closed ✅", tapX+68, tapY+4);
+   x.fillStyle="rgba(46,125,50,0.9)"; x.fillRect(tapX+65, tapY-35, 175, 26);
+   x.strokeStyle="white"; x.lineWidth=2; x.strokeRect(tapX+65, tapY-35, 175, 26);
+   x.fillStyle="white"; x.font="bold 13px Arial"; x.fillText("✅ Good! Water Saved!", tapX+70, tapY-17);
  }
 
  requestAnimationFrame(draw);

@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Stickman Story</title>
 <style>
-body{margin:0;background:#f0f0f0;overflow:hidden}
+body{margin:0;background:#87CEEB;overflow:hidden}
 canvas{width:100vw;height:100vh;display:block}
-h1{position:fixed;top:15px;width:100%;text-align:center;font-family:cursive}
+h1{position:fixed;top:10px;width:100%;text-align:center;font-family:cursive;color:#333;z-index:10}
 </style>
 </head>
 <body>
@@ -17,26 +17,98 @@ h1{position:fixed;top:15px;width:100%;text-align:center;font-family:cursive}
 let C=document.getElementById('c'),X=C.getContext('2d');
 function R(){C.width=innerWidth;C.height=innerHeight}R();
 addEventListener('resize',R);
-let x=100, dir=1;
+let t=0;
 function draw(){
+t+=0.15;
 X.clearRect(0,0,C.width,C.height);
+// sky
+X.fillStyle='#87CEEB';X.fillRect(0,0,C.width,C.height);
 // ground
 X.fillStyle='#7AC87A';X.fillRect(0,C.height-80,C.width,80);
-// stickman
-let y=C.height-80;
-X.strokeStyle='black';X.lineWidth=4;X.lineCap='round';
+
+// === SURAJ with aankhen aur kirnen ===
+let sx=C.width-120, sy=100;
+X.save();
+X.translate(sx,sy);
+X.rotate(t*0.02);
+// kirnen
+X.strokeStyle='#FFD700';X.lineWidth=4;
+for(let i=0;i<12;i++){
+  X.rotate(Math.PI/6);
+  X.beginPath();X.moveTo(55,0);X.lineTo(75,0);X.stroke();
+}
+X.restore();
+// suraj face
+X.fillStyle='#FFD700';X.beginPath();X.arc(sx,sy,50,0,6.28);X.fill();
+// aankhen
+X.fillStyle='black';
+X.beginPath();X.arc(sx-15,sy-10,5,0,6.28);X.arc(sx+15,sy-10,5,0,6.28);X.fill();
+// muskurahat
+X.strokeStyle='black';X.lineWidth=2;X.beginPath();X.arc(sx,sy+10,15,0.2,Math.PI-0.2);X.stroke();
+
+// === BENCH ===
+let bx= C.width*0.5 - 80, by=C.height-140;
+X.fillStyle='#8B4513';X.fillRect(bx,by,160,10);
+X.fillRect(bx,by+30,160,10);
+X.fillRect(bx+10,by+10,15,50);
+X.fillRect(bx+135,by+10,15,50);
+
+// === AURAT bench par ===
+let wx=bx+80, wy=by;
+X.strokeStyle='#E91E63';X.lineWidth=4;
 // head
-X.beginPath();X.arc(x,y-100,20,0,6.28);X.stroke();
+X.beginPath();X.arc(wx,wy-40,18,0,6.28);X.stroke();
+// body - frock
+X.beginPath();X.moveTo(wx,wy-22);X.lineTo(wx,wy+5);X.stroke();
+X.beginPath();X.moveTo(wx-15,wy+5);X.lineTo(wx+15,wy+5);X.lineTo(wx+10,wy+20);X.lineTo(wx-10,wy+20);X.closePath();X.stroke();
+// legs sitting
+X.beginPath();X.moveTo(wx-8,wy+20);X.lineTo(wx-8,wy+30);X.lineTo(wx-15,wy+30);X.stroke();
+X.beginPath();X.moveTo(wx+8,wy+20);X.lineTo(wx+8,wy+30);X.lineTo(wx+15,wy+30);X.stroke();
+// hair
+X.strokeStyle='#8B4513';X.beginPath();X.arc(wx,wy-45,20,Math.PI,0);X.stroke();
+
+// === BILI neeche dum hilati ===
+let cx=bx+80, cy=C.height-85;
+let tailWag=Math.sin(t)*0.8;
+// cat head
+X.fillStyle='orange';X.beginPath();X.arc(cx,cy-15,14,0,6.28);X.fill();
+X.fillStyle='black';
+X.beginPath();X.arc(cx-5,cy-18,2,0,6.28);X.arc(cx+5,cy-18,2,0,6.28);X.fill();
+// ears
+X.fillStyle='orange';X.beginPath();X.moveTo(cx-10,cy-25);X.lineTo(cx-14,cy-35);X.lineTo(cx-4,cy-28);X.fill();
+X.beginPath();X.moveTo(cx+10,cy-25);X.lineTo(cx+14,cy-35);X.lineTo(cx+4,cy-28);X.fill();
 // body
-X.beginPath();X.moveTo(x,y-80);X.lineTo(x,y-40);X.stroke();
+X.beginPath();X.ellipse(cx,cy,18,10,0,0,6.28);X.fill();
+// dum hil rahi
+X.strokeStyle='orange';X.lineWidth=6;X.lineCap='round';
+X.beginPath();X.moveTo(cx+18,cy);
+X.quadraticCurveTo(cx+30+tailWag*10,cy-10, cx+35, cy+5-Math.sin(t)*5);
+X.stroke();
+
+// === STICKMAN bolta hua ===
+let sx2=120, sy2=C.height-80;
+X.strokeStyle='black';X.lineWidth=4;
+// head
+X.beginPath();X.arc(sx2,sy2-100,22,0,6.28);X.stroke();
+// body
+X.beginPath();X.moveTo(sx2,sy2-78);X.lineTo(sx2,sy2-35);X.stroke();
 // arms
-X.beginPath();X.moveTo(x,y-70);X.lineTo(x-25,y-50);X.moveTo(x,y-70);X.lineTo(x+25,y-50);X.stroke();
+X.beginPath();X.moveTo(sx2,sy2-65);X.lineTo(sx2-28,sy2-50);X.moveTo(sx2,sy2-65);X.lineTo(sx2+28,sy2-50);X.stroke();
 // legs
-X.beginPath();X.moveTo(x,y-40);X.lineTo(x-20,y);X.moveTo(x,y-40);X.lineTo(x+20,y);X.stroke();
-// eyes
-X.fillStyle='black';X.beginPath();X.arc(x-7,y-105,2,0,6.28);X.arc(x+7,y-105,2,0,6.28);X.fill();
-x+=dir*2;
-if(x>C.width-50 || x<50) dir*=-1;
+X.beginPath();X.moveTo(sx2,sy2-35);X.lineTo(sx2-18,sy2);X.moveTo(sx2,sy2-35);X.lineTo(sx2+18,sy2);X.stroke();
+// aankhen
+X.fillStyle='black';X.beginPath();X.arc(sx2-8,sy2-105,2.5,0,6.28);X.arc(sx2+8,sy2-105,2.5,0,6.28);X.fill();
+// HONT jo hil rahe hain - talking lips
+let mouthOpen = Math.abs(Math.sin(t*0.5)) * 8 + 2;
+X.fillStyle='#FF4444';
+X.beginPath();X.ellipse(sx2,sy2-90, 8, mouthOpen, 0,0,6.28);X.fill();
+X.strokeStyle='black';X.lineWidth=1.5;X.stroke();
+
+// speech
+X.fillStyle='white';X.strokeStyle='black';X.lineWidth=1;
+X.beginPath();X.roundRect(sx2+40,sy2-130,110,30,10);X.fill();X.stroke();
+X.fillStyle='black';X.font='14px cursive';X.fillText('Hello! 😊',sx2+55,sy2-110);
+
 requestAnimationFrame(draw);
 }
 draw();

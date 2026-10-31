@@ -2,91 +2,42 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Saas Bahu Village Story</title>
+<title>Mehndi Aur Laddu - Saas Bahu Story</title>
 <style>
-body{margin:0;background:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:'Noto Nastaliq Urdu', sans-serif}
+body{margin:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif}
 #stage{
  width:360px;height:640px;
- background: url('https://i.imgur.com/8Km9tLL.jpg');
+ background-image: url('./mehndi.jpg');
  background-size: cover;
- background-position: center;
- border:4px solid white;border-radius:20px;
+ background-position: center top;
+ border:4px solid #fff;border-radius:20px;
  position:relative;overflow:hidden;
- box-shadow:0 0 20px rgba(0,0,0,0.5);
 }
-/* Gaon ka background aapki photo jaisa */
-.village-bg{
- position:absolute;width:100%;height:100%;
- background: linear-gradient(to bottom, #87CEEB 0%, #90EE90 40%, #7CFC00 100%);
-}
-.well{
- position:absolute;left:0;top:200px;width:90px;height:120px;
- background:#808080;border:3px solid #555;border-radius:0 10px 10px 0;
-}
-.tree{position:absolute;left:120px;top:0;font-size:100px}
-.house{position:absolute;right:20px;top:30px;font-size:60px}
-
-.char{
- position:absolute;bottom:120px;width:130px;text-align:center;
- transition: all 0.5s; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
-}
-#c1{left:20px; animation: saas-hil 2s infinite alternate}
-#c2{right:20px; animation: bahu-hil 2s infinite alternate 0.5s}
-@keyframes saas-hil{0%{transform:translateY(0)}100%{transform:translateY(-8px)}}
-@keyframes bahu-hil{0%{transform:translateY(0) scale(1)}100%{transform:translateY(-6px) scale(1.02)}}
-
-.saree{font-size:110px; line-height:1}
-.name{ background:rgba(255,255,255,0.9); padding:2px 8px; border-radius:10px; font-size:12px; font-weight:bold; margin-top:-10px}
-
-.dialog{
- position:absolute;bottom:15px;left:5%;width:90%;
- background:white;padding:12px;border-radius:15px;
- text-align:center;font-weight:bold;font-size:16px;
- box-shadow:0 4px 10px rgba(0,0,0,0.3);
- animation: pop 0.4s;
-}
-@keyframes pop{0%{transform:scale(0)}100%{transform:scale(1)}}
-button{margin-top:15px;padding:12px 35px;font-size:16px;border-radius:25px;border:none;background:#8e44ad;color:white;font-weight:bold}
+.overlay{position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,0.6) 20%, transparent 60%)}
+.dialog{position:absolute;bottom:20px;left:5%;width:90%;background:rgba(255,255,255,0.95);padding:14px;border-radius:15px;text-align:center;font-weight:bold;font-size:17px;box-shadow:0 4px 15px rgba(0,0,0,0.5)}
+.title{position:absolute;top:15px;left:5%;width:90%;background:#ff4757;color:white;padding:8px;border-radius:10px;text-align:center;font-weight:bold;font-size:14px}
+button{margin-top:15px;padding:14px 40px;font-size:17px;border-radius:30px;border:none;background:#8e44ad;color:white;font-weight:bold}
 </style>
 </head>
 <body>
-
 <div id="stage">
-  <div class="village-bg"></div>
-  <div class="well">🕳️<br>कुआँ</div>
-  <div class="tree">🌳</div>
-  <div class="house">🏠</div>
-
-  <div class="char" id="c1">
-    <div class="saree">👩‍🦳</div>
-    <div class="name" style="background:#9b59b6;color:white">Saas - Purple Saree</div>
-  </div>
-  <div class="char" id="c2">
-    <div class="saree">👩</div>
-    <div class="name" style="background:#c0392b;color:white">Bahu - Red Saree</div>
-  </div>
-
-  <div class="dialog" id="dialog">Saas: Are sun, WhatsApp par kya gadbad hai?</div>
+ <div class="overlay"></div>
+ <div class="title">Mehndi Aur Laddu Part 2 - Saas Bahu Story</div>
+ <div class="dialog" id="d">Saas: Are Bahu, ye laddu kisne khaye?</div>
 </div>
-
-<button onclick="nextScene()">Next Dialogue →</button>
-
+<button onclick="next()">Next Scene →</button>
 <script>
 let i=0;
-const story=[
-"Saas: Are sun, WhatsApp par kya gadbad hai?",
-"Bahu: Amma ji, ruko mai dekhti hu, Big Trouble!",
-"Saas: Haye kisne mera WhatsApp kharab kar diya?",
-"Bahu: Tension mat lo Amma, maine theek kar diya!",
-"Saas & Bahu Khush! The End ❤️"
+let lines=[
+"Saas: Are Bahu, ye laddu kisne khaye?",
+"Bahu: Amma ji maine nahi, choti ne khaye honge!",
+"Saas: Haye itne saare laddu, mehndi kharab ho jayegi!",
+"Bahu: Amma ji tension nahi, mehndi ke baad laddu aur meethay lagte hain!",
+"4ro Khush! Mehndi Aur Laddu Party! ❤️"
 ];
-function nextScene(){
- i=(i+1)%story.length;
- document.getElementById('dialog').style.animation='none';
- setTimeout(()=>{ 
-   document.getElementById('dialog').style.animation='pop 0.4s';
-   document.getElementById('dialog').innerText=story[i];
- }, 50);
+function next(){
+ i=(i+1)%lines.length;
+ document.getElementById('d').innerText=lines[i];
 }
 </script>
 </body>

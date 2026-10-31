@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pani Bachao - Fixed</title>
+<title>Pani Bachao</title>
 <style>
 body{margin:0;background:#87CEEB;overflow:hidden;font-family:cursive}
 canvas{width:100vw;height:100vh;display:block}
-#msg{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:20px 30px;border-radius:15px;border:4px solid #2196F3;display:none;text-align:center;z-index:20;box-shadow:0 0 20px rgba(0,0,0,0.5)}
-#msg h2{color:#2196F3;margin:0 0 10px}
-#replay{margin-top:10px;padding:8px 15px;background:#2196F3;color:white;border:none;border-radius:8px;cursor:pointer}
-h1{position:fixed;top:8px;width:100%;text-align:center;color:#333;z-index:10;font-size:19px}
+#msg{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:18px 25px;border-radius:15px;border:4px solid #2196F3;display:none;text-align:center;z-index:20}
+#msg h2{color:#2196F3;margin:0 0 8px}
+#replay{margin-top:8px;padding:7px 14px;background:#2196F3;color:white;border:none;border-radius:8px;cursor:pointer}
+h1{position:fixed;top:8px;width:100%;text-align:center;color:#333;z-index:10;font-size:18px}
 </style>
 </head>
 <body>
@@ -26,21 +26,25 @@ h1{position:fixed;top:8px;width:100%;text-align:center;color:#333;z-index:10;fon
 let C=document.getElementById('c'),X=C.getContext('2d');
 function R(){C.width=innerWidth;C.height=innerHeight}R();
 addEventListener('resize',R);
-let t=0, sx2=80, step=0;
+let t=0, sx2=80, step=0, catX=0, catDir=1;
 let tapOpen=true, waterParticles=[], storyState=0, closeProgress=0;
 let tapX=0, tapY=0;
 function resetStory(){
-  tapOpen=true; storyState=0; closeProgress=0; sx2=80;
+  tapOpen=true; storyState=0; closeProgress=0; sx2=80; catX=C.width-320;
   waterParticles=[]; document.getElementById('msg').style.display='none';
 }
 resetStory();
 function draw(){
-t+=0.14; step+=0.2;
+t+=0.14; step+=0.2; catX+=catDir*0.8;
+let houseLeft=C.width-260, houseRight=C.width-40;
+if(catX>houseRight-30) catDir=-1;
+if(catX<houseLeft-20) catDir=1;
+
 X.clearRect(0,0,C.width,C.height);
 X.fillStyle='#87CEEB';X.fillRect(0,0,C.width,C.height);
 X.fillStyle='#7AC87A';X.fillRect(0,C.height-80,C.width,80);
 
-tapX=C.width*0.55; tapY=C.height-200;
+tapX=C.width*0.5; tapY=C.height-200;
 
 // === SURAJ ===
 let sunX=C.width-110, sunY=85;
@@ -48,28 +52,26 @@ X.save();X.translate(sunX,sunY);X.rotate(t*0.02);
 X.strokeStyle='#FFD700';X.lineWidth=4;
 for(let i=0;i<12;i++){X.rotate(Math.PI/6);X.beginPath();X.moveTo(48,0);X.lineTo(68,0);X.stroke();}
 X.restore();
-X.fillStyle='#FFD700';X.beginPath();X.arc(sunX,sunY,42,0,6.28);X.fill();
+X.fillStyle='#FFD700';X.beginPath();X.arc(sunX,sunY,40,0,6.28);X.fill();
 X.fillStyle='black';X.beginPath();X.arc(sunX-12,sunY-7,3.5,0,6.28);X.arc(sunX+12,sunY-7,3.5,0,6.28);X.fill();
 X.strokeStyle='black';X.lineWidth=2;X.beginPath();X.arc(sunX,sunY+8,10,0.2,Math.PI-0.2);X.stroke();
 
 // === BOARD ===
-X.fillStyle='#2196F3';X.fillRect(20,90,185,75);
-X.strokeStyle='#0D47A1';X.lineWidth=3;X.strokeRect(20,90,185,75);
-X.fillStyle='white';X.font='bold 14px Arial';X.fillText('💧 PANI BACHAO 💧',30,112);
-X.font='bold 11px Arial';X.fillText(tapOpen?'Nal Khula Hai! Band Karo!':'✅ Nal Band Ho Gaya!',35,135);
-X.fillText('Pani Zindagi Hai',50,153);
+X.fillStyle='#2196F3';X.fillRect(20,90,185,70);
+X.strokeStyle='#0D47A1';X.lineWidth=3;X.strokeRect(20,90,185,70);
+X.fillStyle='white';X.font='bold 13px Arial';X.fillText('💧 PANI BACHAO 💧',30,110);
+X.font='bold 11px Arial';X.fillText(tapOpen?'Nal Khula Hai!':'✅ Nal Band!',40,130);
+X.fillText('Pani Zindagi Hai',45,148);
 
-// === GHAR BADA - SURAJ SIDE ===
+// === GHAR BADA RIGHT SIDE ===
 let hx=C.width-260, hy=C.height-300;
-// BADA GHAR
 X.fillStyle='#FFE4B5';X.fillRect(hx,hy,220,180);
 X.fillStyle='#E74C3C';X.beginPath();X.moveTo(hx-20,hy);X.lineTo(hx+110,hy-70);X.lineTo(hx+240,hy);X.closePath();X.fill();
-X.fillStyle='#8B4513';X.fillRect(hx+85,hy+90,45,90); // bada darwaza
+X.fillStyle='#8B4513';X.fillRect(hx+85,hy+90,45,90);
 X.fillStyle='gold';X.beginPath();X.arc(hx+118,hy+130,6,0,6.28);X.fill();
 X.fillStyle='#87CEEB';X.strokeStyle='#8B4513';X.lineWidth=3;
 X.fillRect(hx+15,hy+20,50,50);X.strokeRect(hx+15,hy+20,50,50);
 X.fillRect(hx+155,hy+20,50,50);X.strokeRect(hx+155,hy+20,50,50);
-X.fillRect(hx+15,hy+85,30,20);X.strokeRect(hx+15,hy+85,30,20);
 X.fillStyle='#555';X.fillRect(hx+150,hy-45,22,55);
 X.fillStyle='#DDD';X.beginPath();X.arc(hx+161,hy-48,20,0,6.28);X.fill();
 
@@ -97,47 +99,60 @@ for(let i=waterParticles.length-1;i>=0;i--){
 }
 if(!tapOpen && waterParticles.length>0 && t%3==0) waterParticles.pop();
 
-// === BENCH FIXED - SEEDHA ===
-let bx=C.width*0.5-180, by=C.height-150;
-// bench legs
+// === BENCH LEFT SIDE - FIXED ===
+let bx=30, by=C.height-150;
 X.fillStyle='#5D4037';X.fillRect(bx+15,by+15,12,45);X.fillRect(bx+105,by+15,12,45);
-// seat - ek hi takhta seedha
 X.fillStyle='#8B4513';X.fillRect(bx,by,130,14);
-// back support
 X.fillRect(bx,by-30,130,12);
 X.fillRect(bx+15,by-30,10,44);X.fillRect(bx+105,by-30,10,44);
 
-// === AURAT FIXED - LEGS NEECHAY ===
-let wx=bx+65, wy=by; // bench seat par
-// head
+// === AURAT LEFT BENCH PAR - LEGS NEECHAY ===
+let wx=bx+65, wy=by;
 X.strokeStyle='black';X.lineWidth=3;X.lineCap='round';
 X.beginPath();X.arc(wx,wy-38,14,0,6.28);X.stroke();
-// long hair
 X.beginPath();X.arc(wx-2,wy-44,14,Math.PI*0.9,Math.PI*1.9);X.stroke();
-// body
 X.beginPath();X.moveTo(wx,wy-24);X.lineTo(wx,wy-5);X.stroke();
-// skirt - bench par bethi
 X.beginPath();X.moveTo(wx-12,wy-5);X.lineTo(wx+12,wy-5);X.lineTo(wx+10,wy+8);X.lineTo(wx-10,wy+8);X.closePath();X.stroke();
-// LEGS NEECHAY LATKA RAHI - FIXED
-X.beginPath();X.moveTo(wx-6,wy+8);X.lineTo(wx-6,wy+28);X.lineTo(wx-10,wy+28);X.stroke(); // left leg neeche
-X.beginPath();X.moveTo(wx+6,wy+8);X.lineTo(wx+6,wy+28);X.lineTo(wx+10,wy+28);X.stroke(); // right leg neeche
-// arms on lap
+X.beginPath();X.moveTo(wx-6,wy+8);X.lineTo(wx-6,wy+28);X.lineTo(wx-10,wy+28);X.stroke();
+X.beginPath();X.moveTo(wx+6,wy+8);X.lineTo(wx+6,wy+28);X.lineTo(wx+10,wy+28);X.stroke();
 X.beginPath();X.moveTo(wx,wy-16);X.lineTo(wx-14,wy-2);X.moveTo(wx,wy-16);X.lineTo(wx+14,wy-2);X.stroke();
-// eyes + lips
 X.fillStyle='black';X.beginPath();X.arc(wx-4,wy-41,1.8,0,6.28);X.arc(wx+4,wy-41,1.8,0,6.28);X.fill();
 let m1=Math.abs(Math.sin(t*0.4+1))*4+1;
 X.fillStyle='#FF3366';X.beginPath();X.ellipse(wx,wy-31,4,m1,0,0,6.28);X.fill();
 X.strokeStyle='black';X.lineWidth=1;X.stroke();
 
-// === BILI door - bench se alag ===
-let cx=bx+170, cy=C.height-88;
-let tailWag=Math.sin(t)*1.1;
-X.fillStyle='orange';X.beginPath();X.arc(cx,cy-12,10,0,6.28);X.fill();
-X.beginPath();X.ellipse(cx,cy,13,7,0,0,6.28);X.fill();
-X.strokeStyle='orange';X.lineWidth=4;X.beginPath();X.moveTo(cx+12,cy);
-X.quadraticCurveTo(cx+20+tailWag*8,cy-8,cx+28,cy+2);X.stroke();
+// === BILI - ASLI BILI GHAR KE PAAS CHALTI HUI ===
+let cy=C.height-88;
+let catWalk=Math.sin(step*1.5)*6;
+let tailWag=Math.sin(t)*1.3;
+// cat body
+X.fillStyle='#FFA500';
+X.beginPath();X.ellipse(catX,cy-5,18,10,0,0,6.28);X.fill();
+// legs chalte hue
+X.fillStyle='#FF8C00';
+X.beginPath();X.ellipse(catX-8+catWalk*0.3,cy+2,4,6,0,0,6.28);X.fill();
+X.beginPath();X.ellipse(catX+8-catWalk*0.3,cy+2,4,6,0,0,6.28);X.fill();
+// head
+X.fillStyle='#FFA500';X.beginPath();X.arc(catX+18*catDir,cy-12,12,0,6.28);X.fill();
+// ears pointed
+X.beginPath();X.moveTo(catX+12*catDir,cy-20);X.lineTo(catX+10*catDir,cy-30);X.lineTo(catX+18*catDir,cy-22);X.fill();
+X.beginPath();X.moveTo(catX+22*catDir,cy-20);X.lineTo(catX+24*catDir,cy-30);X.lineTo(catX+28*catDir,cy-22);X.fill();
+// inner ears pink
+X.fillStyle='pink';X.beginPath();X.arc(catX+13*catDir,cy-23,2.5,0,6.28);X.arc(catX+23*catDir,cy-23,2.5,0,6.28);X.fill();
+// eyes
+X.fillStyle='green';X.beginPath();X.arc(catX+22*catDir,cy-14,3,0,6.28);X.arc(catX+28*catDir,cy-14,3,0,6.28);X.fill();
+X.fillStyle='black';X.beginPath();X.arc(catX+22*catDir,cy-14,1,0,6.28);X.arc(catX+28*catDir,cy-14,1,0,6.28);X.fill();
+// nose
+X.fillStyle='pink';X.beginPath();X.arc(catX+30*catDir,cy-10,1.5,0,6.28);X.fill();
+// whiskers
+X.strokeStyle='black';X.lineWidth=0.8;
+X.beginPath();X.moveTo(catX+30*catDir,cy-11);X.lineTo(catX+36*catDir,cy-13);X.moveTo(catX+30*catDir,cy-10);X.lineTo(catX+36*catDir,cy-10);X.stroke();
+// tail hilti hui
+X.strokeStyle='#FF8C00';X.lineWidth=6;X.lineCap='round';
+X.beginPath();X.moveTo(catX-18,cy-5);
+X.quadraticCurveTo(catX-28+tailWag*8,cy-12,catX-32,cy-2);X.stroke();
 
-// === STICKMAN HERO CHALTA ===
+// === STICKMAN HERO ===
 let sy2=C.height-80;
 if(storyState==0){
   if(sx2 < tapX-55){ sx2+=1.8; }

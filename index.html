@@ -1,14 +1,57 @@
-<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>Funny Faqeer 2</title><style>body{margin:0;background:#000;display:flex;justify-content:center;align-items:center;height:100vh}canvas{border:4px solid gold;border-radius:20px}</style></head><body><canvas id="c" width="360" height="640"></canvas><script>
-const cv=document.getElementById('c'),x=cv.getContext('2d');let p=30,f=360,s=0,st=0,t=0,money=[];
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>Seth Ka Acha Ghar</title><style>body{margin:0;background:#111;display:flex;justify-content:center;align-items:center;height:100vh}canvas{border:4px solid white;border-radius:15px}</style></head><body><canvas id="c" width="360" height="640"></canvas><script>
+const cv=document.getElementById('c'), x=cv.getContext('2d');
+let p=20, f=400, s=0, st=0, t=0;
+
+function drawHouse(){
+ // Sky
+ x.fillStyle="#87CEEB"; x.fillRect(0,0,360,350);
+ x.fillStyle="#90EE90"; x.fillRect(0,350,360,300);
+ x.fillStyle="yellow"; x.beginPath(); x.arc(300,80,30,0,7); x.fill();
+ // House Body
+ x.fillStyle="#FFDAB9"; x.fillRect(140,220,200,180); 
+ x.strokeStyle="#8B4513"; x.lineWidth=3; x.strokeRect(140,220,200,180);
+ // Roof
+ x.fillStyle="#B22222"; x.beginPath(); x.moveTo(130,220); x.lineTo(240,150); x.lineTo(350,220); x.closePath(); x.fill(); x.stroke();
+ // Roof tiles line
+ for(let i=0;i<5;i++){ x.beginPath(); x.moveTo(150+i*20,170+i*10); x.lineTo(230+i*20,170+i*10); x.stroke(); }
+ // Chimney
+ x.fillStyle="#8B4513"; x.fillRect(280,160,20,50); x.fillStyle="#555"; x.fillRect(275,155,30,10);
+ // Door
+ x.fillStyle="#8B4513"; x.fillRect(220,320,50,80); x.fillStyle="gold"; x.beginPath(); x.arc(260,360,5,0,7); x.fill();
+ x.strokeRect(220,320,50,80);
+ // WINDOW 1 with glass and curtain
+ x.fillStyle="#ADD8E6"; x.fillRect(155,250,50,50); x.strokeRect(155,250,50,50);
+ x.fillStyle="white"; x.fillRect(155,250,50,5); x.fillRect(178,250,4,50); x.fillRect(155,272,50,4);
+ x.fillStyle="rgba(255,255,255,0.5)"; x.fillRect(160,255,10,40); // curtain shine
+ x.fillStyle="black"; x.font="8px sans-serif"; x.fillText("WINDOW",158,285);
+ // WINDOW 2
+ x.fillStyle="#ADD8E6"; x.fillRect(285,250,45,45); x.strokeRect(285,250,45,45);
+ x.fillStyle="white"; x.fillRect(285,250,45,5); x.fillRect(305,250,4,45);
+ // Light on
+ if(st>1){ x.fillStyle="yellow"; x.fillRect(160,255,40,40); x.fillStyle="orange"; x.fillRect(290,255,35,35); }
+}
+
 function draw(){
-x.fillStyle="#FFD700";x.fillRect(0,0,360,640);x.fillStyle="#87CEEB";x.fillRect(0,0,360,380);x.fillStyle="#90EE90";x.fillRect(0,400,360,240);
-x.fillStyle="#8B4513";x.fillRect(180,220,150,180);x.fillStyle="white";x.font="bold 14px sans-serif";x.fillText("SETH KANJOOS",195,240);x.fillText("🏦 BANK",220,380);
-// Seth fat
-x.fillStyle="#FFA500";x.beginPath();x.arc(255,320,30,0,7);x.fill();x.fillStyle="black";x.fillRect(255-20,350,40,50);x.font="10px sans-serif";x.fillText("SETH",240,430);
-// Faqeer
-if(st==0){p+=2.5;s+=0.4;if(p>140){st=1;t=0}} if(st==1){t++;if(t>80){st=2;t=0;for(let i=0;i<20;i++)money.push({x:255,y:300,vx:(Math.random()-0.5)*10,vy:-Math.random()*12})}} 
-money.forEach(m=>{m.x+=m.vx;m.y+=m.vy;m.vy+=0.3;x.fillStyle="green";x.font="bold 14px sans-serif";x.fillText("💵",m.x,m.y)});
-x.strokeStyle="black";x.lineWidth=3;x.beginPath();x.arc(p,f-30,18,0,7);x.stroke();x.beginPath();x.moveTo(p,f-12);x.lineTo(p,f+30);x.stroke();let l=Math.sin(s)*18;if(st<2){x.beginPath();x.moveTo(p,f+30);x.lineTo(p-12+l,f+70);x.moveTo(p,f+30);x.lineTo(p+12-l,f+70);x.stroke()}else{x.beginPath();x.moveTo(p,f+30);x.lineTo(p-15,f+60);x.moveTo(p,f+30);x.lineTo(p+15,f+60);x.stroke();x.fillStyle="black";x.font="bold 16px sans-serif";if(t<50)x.fillText("Oye Seth! Lottery Lag Gayi!",20,150);else{x.fillText("Seth Behossh! Faqeer Ameer! 😂",20,150);x.fillText("💰💰💰",p-20,f-60)}}
-x.fillStyle="black";x.font="bold 18px sans-serif";if(st==0)x.fillText("Faqeera ja raha hai...",20,500);if(st==1)x.fillText("Faqeer: Seth, Dua Du Ga!",20,500);
-requestAnimationFrame(draw);}draw();cv.onclick=()=>{p=30;f=360;st=0;t=0;money=[]};
+ drawHouse();
+ // Seth inside window
+ if(st>=1){ x.fillStyle="black"; x.beginPath(); x.arc(180,275,10,0,7); x.fill(); x.fillStyle="black"; x.font="bold 9px sans-serif"; x.fillText("SETH",165,310); }
+ // Faqeer walk
+ if(st==0){ p+=2; s+=0.35; if(p>110){st=1; t=0} }
+ if(st==1){ t++; if(t>80){st=2; t=0} }
+ if(st==2){ t++; }
+ // Faqeer body
+ x.strokeStyle="black"; x.lineWidth=3; x.beginPath(); x.arc(p,f-30,18,0,7); x.stroke();
+ x.beginPath(); x.moveTo(p,f-12); x.lineTo(p,f+30); x.stroke();
+ let l=Math.sin(s)*15;
+ x.beginPath(); x.moveTo(p,f+30); x.lineTo(p-10+l,f+70); x.moveTo(p,f+30); x.lineTo(p+10-l,f+70); x.stroke();
+ // Bag
+ x.strokeRect(p+15,f-5,18,18);
+ x.fillStyle="black"; x.font="bold 14px sans-serif";
+ if(st==0) x.fillText("Seth ji...",20,480);
+ if(st==1) x.fillText("Darwaza kholo! Bheek de do!",20,480);
+ if(st==2) x.fillText("Wah! Kya ghar hai! Window bhi hai!",10,480);
+ requestAnimationFrame(draw);
+}
+draw();
+cv.onclick=()=>{p=20; st=0; t=0}
 </script></body></html>

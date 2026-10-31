@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pani Bachao - Living Girl</title>
+<title>Pani Bachao - Big Girl</title>
 <style>
 body{margin:0;background:#87CEEB;overflow:hidden;font-family:cursive}
 canvas{width:100vw;height:100vh;display:block}
@@ -84,73 +84,71 @@ function drawCanvasMessage(){
   X.fillStyle='#4CAF50'; X.font='bold 12px Arial'; X.fillText('✅ Nal Band Ho Gaya!', C.width/2, my+120);
 }
 
-// LIVING GIRL DRAW FUNCTION - CUTE CARTOON
+// BIG LIVING GIRL - 2x SIZE
 function drawLivingGirl(gx, gy){
+  let S=2.1; // SCALE - bara size
   // Shadow
-  X.fillStyle='rgba(0,0,0,0.12)'; X.beginPath(); X.ellipse(gx, gy+32, 22, 6, 0, 0, 6.28); X.fill();
+  X.fillStyle='rgba(0,0,0,0.15)'; X.beginPath(); X.ellipse(gx, gy+32*S, 24*S, 7*S, 0, 0, 6.28); X.fill();
   
-  // Legs - sitting
-  X.fillStyle='#FFDAB9'; // skin
-  X.fillRect(gx-8, gy+8, 7, 18); X.fillRect(gx+3, gy+8, 7, 18);
-  // Shoes
-  X.fillStyle='#FF69B4'; X.beginPath(); X.ellipse(gx-5, gy+28, 8, 4, 0, 0, 6.28); X.fill();
-  X.beginPath(); X.ellipse(gx+7, gy+28, 8, 4, 0, 0, 6.28); X.fill();
-  X.fillStyle='white'; X.beginPath(); X.arc(gx-5, gy+27, 2, 0, 6.28); X.arc(gx+7, gy+27, 2, 0, 6.28); X.fill();
-  
-  // Dress - cute pink frock
-  X.fillStyle='#FFB6C1';
-  X.beginPath(); X.moveTo(gx-14, gy-8); X.lineTo(gx+14, gy-8); X.lineTo(gx+18, gy+14); X.lineTo(gx-18, gy+14); X.closePath(); X.fill();
-  X.fillStyle='#FF69B4'; X.fillRect(gx-14, gy-8, 28, 4); // belt
-  X.fillStyle='#FFF'; X.beginPath(); X.arc(gx, gy-6, 3, 0, 6.28); X.fill(); // button
-  
-  // Arms
+  // Legs
   X.fillStyle='#FFDAB9';
-  X.beginPath(); X.ellipse(gx-16, gy-2, 4, 9, -0.3, 0, 6.28); X.fill();
-  X.beginPath(); X.ellipse(gx+16, gy-2, 4, 9, 0.3, 0, 6.28); X.fill();
+  X.fillRect(gx-10*S, gy+10*S, 8*S, 22*S); X.fillRect(gx+4*S, gy+10*S, 8*S, 22*S);
+  // Shoes - bigger pink
+  X.fillStyle='#FF1493'; 
+  X.beginPath(); X.ellipse(gx-6*S, gy+34*S, 10*S, 5*S, 0, 0, 6.28); X.fill();
+  X.beginPath(); X.ellipse(gx+9*S, gy+34*S, 10*S, 5*S, 0, 0, 6.28); X.fill();
+  X.fillStyle='white'; X.beginPath(); X.arc(gx-6*S, gy+33*S, 2.5*S, 0, 6.28); X.arc(gx+9*S, gy+33*S, 2.5*S, 0, 6.28); X.fill();
+  
+  // Dress - big cute frock
+  X.fillStyle='#FF69B4';
+  X.beginPath(); X.moveTo(gx-18*S, gy-10*S); X.lineTo(gx+18*S, gy-10*S); X.lineTo(gx+24*S, gy+16*S); X.lineTo(gx-24*S, gy+16*S); X.closePath(); X.fill();
+  X.fillStyle='#E91E63'; X.fillRect(gx-18*S, gy-10*S, 36*S, 5*S);
+  X.fillStyle='#FFF'; X.beginPath(); X.arc(gx, gy-7*S, 4*S, 0, 6.28); X.fill();
+  X.fillStyle='#FFF'; X.beginPath(); X.arc(gx, gy, 3*S, 0, 6.28); X.fill();
+  
+  // Arms - thicker
+  X.fillStyle='#FFDAB9';
+  X.beginPath(); X.ellipse(gx-20*S, gy, 5*S, 12*S, -0.3, 0, 6.28); X.fill();
+  X.beginPath(); X.ellipse(gx+20*S, gy, 5*S, 12*S, 0.3, 0, 6.28); X.fill();
   
   // Neck
-  X.fillStyle='#FFDAB9'; X.fillRect(gx-4, gy-14, 8, 8);
+  X.fillStyle='#FFDAB9'; X.fillRect(gx-5*S, gy-18*S, 10*S, 10*S);
   
-  // Face - cute round
-  X.fillStyle='#FFDAB9'; X.beginPath(); X.arc(gx, gy-24, 16, 0, 6.28); X.fill();
+  // Face - big round
+  X.fillStyle='#FFDAB9'; X.beginPath(); X.arc(gx, gy-32*S, 22*S, 0, 6.28); X.fill();
   
-  // Hair - brown with ponytail
+  // Hair - big
   X.fillStyle='#5D4037';
-  X.beginPath(); X.arc(gx, gy-28, 17, Math.PI, Math.PI*2); X.fill(); // top hair
-  X.beginPath(); X.ellipse(gx-10, gy-24, 6, 10, -0.2, 0, 6.28); X.fill(); // side
-  X.beginPath(); X.ellipse(gx+10, gy-24, 6, 10, 0.2, 0, 6.28); X.fill();
-  // Ponytail
-  X.beginPath(); X.ellipse(gx+16, gy-20, 7, 6, 0.4, 0, 6.28); X.fill();
-  // Bangs
-  X.fillStyle='#4E342E'; X.beginPath(); X.ellipse(gx, gy-32, 14, 6, 0, 0, 6.28); X.fill();
+  X.beginPath(); X.arc(gx, gy-38*S, 24*S, Math.PI, Math.PI*2); X.fill();
+  X.beginPath(); X.ellipse(gx-14*S, gy-32*S, 8*S, 13*S, -0.2, 0, 6.28); X.fill();
+  X.beginPath(); X.ellipse(gx+14*S, gy-32*S, 8*S, 13*S, 0.2, 0, 6.28); X.fill();
+  X.beginPath(); X.ellipse(gx+22*S, gy-28*S, 10*S, 8*S, 0.4, 0, 6.28); X.fill();
+  X.fillStyle='#4E342E'; X.beginPath(); X.ellipse(gx, gy-44*S, 20*S, 9*S, 0, 0, 6.28); X.fill();
   
-  // Hair bow
-  X.fillStyle='#FF1493'; X.beginPath(); X.ellipse(gx+14, gy-30, 5, 3, 0, 0, 6.28); X.fill();
-  X.beginPath(); X.ellipse(gx+18, gy-30, 5, 3, 0, 0, 6.28); X.fill();
-  X.beginPath(); X.arc(gx+16, gy-30, 2.5, 0, 6.28); X.fill();
+  // Bow - big
+  X.fillStyle='#FF1493'; 
+  X.beginPath(); X.ellipse(gx+18*S, gy-42*S, 7*S, 4*S, 0, 0, 6.28); X.fill();
+  X.beginPath(); X.ellipse(gx+24*S, gy-42*S, 7*S, 4*S, 0, 0, 6.28); X.fill();
+  X.beginPath(); X.arc(gx+21*S, gy-42*S, 3.5*S, 0, 6.28); X.fill();
   
   // Eyes - big cute
-  X.fillStyle='white'; X.beginPath(); X.ellipse(gx-5, gy-25, 5, 6, 0, 0, 6.28); X.fill();
-  X.beginPath(); X.ellipse(gx+5, gy-25, 5, 6, 0, 0, 6.28); X.fill();
-  X.fillStyle='#3E2723'; X.beginPath(); X.arc(gx-5, gy-24, 2.8, 0, 6.28); X.fill();
-  X.beginPath(); X.arc(gx+5, gy-24, 2.8, 0, 6.28); X.fill();
-  X.fillStyle='white'; X.beginPath(); X.arc(gx-4, gy-26, 1.2, 0, 6.28); X.arc(gx+6, gy-26, 1.2, 0, 6.28); X.fill();
-  // Eyelashes
-  X.strokeStyle='#3E2723'; X.lineWidth=1; 
-  X.beginPath(); X.moveTo(gx-9, gy-27); X.lineTo(gx-11, gy-29); X.moveTo(gx-6, gy-29); X.lineTo(gx-6, gy-31);
-  X.moveTo(gx+9, gy-27); X.lineTo(gx+11, gy-29); X.moveTo(gx+6, gy-29); X.lineTo(gx+6, gy-31); X.stroke();
+  X.fillStyle='white'; 
+  X.beginPath(); X.ellipse(gx-7*S, gy-34*S, 7*S, 9*S, 0, 0, 6.28); X.fill();
+  X.beginPath(); X.ellipse(gx+7*S, gy-34*S, 7*S, 9*S, 0, 0, 6.28); X.fill();
+  X.fillStyle='#3E2723'; 
+  X.beginPath(); X.arc(gx-7*S, gy-32*S, 4*S, 0, 6.28); X.fill();
+  X.beginPath(); X.arc(gx+7*S, gy-32*S, 4*S, 0, 6.28); X.fill();
+  X.fillStyle='white'; 
+  X.beginPath(); X.arc(gx-5.5*S, gy-36*S, 2*S, 0, 6.28); X.arc(gx+8.5*S, gy-36*S, 2*S, 0, 6.28); X.fill();
   
-  // Blush
-  X.fillStyle='rgba(255,105,180,0.5)'; X.beginPath(); X.arc(gx-10, gy-20, 3, 0, 6.28); X.arc(gx+10, gy-20, 3, 0, 6.28); X.fill();
+  // Blush - visible
+  X.fillStyle='rgba(255,105,180,0.6)'; 
+  X.beginPath(); X.arc(gx-13*S, gy-27*S, 4.5*S, 0, 6.28); X.arc(gx+13*S, gy-27*S, 4.5*S, 0, 6.28); X.fill();
   
-  // Smile - cute
-  let smileOpen=Math.abs(Math.sin(t*0.4+1))*2+1;
-  X.fillStyle='#E91E63'; X.beginPath(); X.ellipse(gx, gy-18, 3.5, smileOpen, 0, 0, 6.28); X.fill();
-  X.strokeStyle='#C2185B'; X.lineWidth=0.8; X.stroke();
-  
-  // Breathing animation
-  let breathe=Math.sin(t*0.15)*0.8;
-  X.fillStyle='rgba(255,255,255,0.0)'; // just for animation
+  // Smile - big
+  let smileOpen=Math.abs(Math.sin(t*0.4+1))*3+2;
+  X.fillStyle='#C2185B'; 
+  X.beginPath(); X.ellipse(gx, gy-22*S, 5*S, smileOpen*S, 0, 0, 6.28); X.fill();
 }
 
 function draw(){
@@ -221,28 +219,28 @@ for(let i=waterParticles.length-1;i>=0;i--){
 }
 if(!tapOpen && waterParticles.length>0 && t%3==0) waterParticles.pop();
 
-// BENCH - STYLISH
+// BENCH BIGGER FOR BIG GIRL
 let bx=110, by=C.height-155;
-X.fillStyle='rgba(0,0,0,0.15)'; X.beginPath(); X.ellipse(bx+75,by+52,65,8,0,0,6.28); X.fill();
+X.fillStyle='rgba(0,0,0,0.15)'; X.beginPath(); X.ellipse(bx+75,by+60,75,10,0,0,6.28); X.fill();
 X.fillStyle='#2C3E50'; 
-X.fillRect(bx+10,by+10,10,42); X.fillRect(bx+130,by+10,10,42);
-X.fillRect(bx+10,by-35,10,35); X.fillRect(bx+130,by-35,10,35);
+X.fillRect(bx+10,by+18,12,42); X.fillRect(bx+130,by+18,12,42);
+X.fillRect(bx+10,by-35,12,35); X.fillRect(bx+130,by-35,12,35);
 for(let i=0;i<4;i++){
   let grad=X.createLinearGradient(bx,by+i*7,bx,by+i*7+6);
   grad.addColorStop(0,'#8D6E63'); grad.addColorStop(1,'#5D4037');
-  X.fillStyle=grad; X.beginPath(); X.roundRect(bx-5,by+i*7,160,6,3); X.fill();
+  X.fillStyle=grad; X.beginPath(); X.roundRect(bx-5,by+i*7,160,7,3); X.fill();
 }
 for(let i=0;i<3;i++){
   let grad2=X.createLinearGradient(bx,by-38+i*11,bx,by-38+i*11+8);
   grad2.addColorStop(0,'#A1887F'); grad2.addColorStop(1,'#6D4C41');
-  X.fillStyle=grad2; X.beginPath(); X.roundRect(bx-5,by-38+i*11,160,8,4); X.fill();
+  X.fillStyle=grad2; X.beginPath(); X.roundRect(bx-5,by-38+i*11,160,9,4); X.fill();
 }
 X.strokeStyle='#3E2723'; X.lineWidth=4; X.lineCap='round';
 X.beginPath(); X.moveTo(bx-5,by-30); X.quadraticCurveTo(bx-12,by-10,bx-5,by+10); X.stroke();
 X.beginPath(); X.moveTo(bx+155,by-30); X.quadraticCurveTo(bx+162,by-10,bx+155,by+10); X.stroke();
 
-// === LIVING GIRL - AB STICK NAHI ===
-let girlX=bx+75, girlY=by-8;
+// BIG GIRL - AB BARI DIKHEGI
+let girlX=bx+75, girlY=by-5;
 drawLivingGirl(girlX, girlY);
 
 let cy=C.height-88;

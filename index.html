@@ -1,43 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pani Bachao Story</title>
+<title>My Glittery Village</title>
 <style>
-body{margin:0;background:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif}
-#stage{width:360px;height:640px;background:linear-gradient(to bottom, #87CEEB 0%, #FFD580 100%);border:4px solid white;border-radius:20px;position:relative;overflow:hidden}
-.sun{position:absolute;width:70px;height:70px;background:#FFD700;border-radius:50%;box-shadow:0 0 30px #FFD700;animation: sunrise 4s infinite alternate}
-@keyframes sunrise{0%{top:400px;left:20px}100%{top:30px;left:40px}}
-.house{position:absolute;bottom:100px;left:80px;width:200px;height:150px;background:#DEB887;border:3px solid #8B4513}
-.roof{position:absolute;top:-40px;left:-10px;width:0;height:0;border-left:110px solid transparent;border-right:110px solid transparent;border-bottom:50px solid #8B0000}
-.door{position:absolute;bottom:0;left:70px;width:50px;height:80px;background:#8B4513}
-.tap{position:absolute;bottom:100px;left:20px;font-size:40px}
-.water{position:absolute;bottom:20px;left:30px;width:10px;background:#00BFFF;animation: waste 1s infinite linear}
-@keyframes waste{0%{height:0;top:200px}100%{height:80px;top:280px}}
-.cloud{position:absolute;top:20px;font-size:30px;animation: movecloud 6s infinite linear}
-@keyframes movecloud{0%{left:-50px}100%{left:360px}}
-.text{position:absolute;bottom:15px;left:5%;width:90%;background:white;padding:12px;border-radius:15px;text-align:center;font-weight:bold}
-button{margin-top:15px;padding:12px 30px;border-radius:25px;border:none;background:#27ae60;color:white;font-weight:bold}
+*{margin:0;padding:0;overflow:hidden}
+body{background:#87CEEB}
+canvas{display:block;width:100vw;height:100vh}
 </style>
 </head>
 <body>
-<div id="stage">
-<div class="sun"></div>
-<div class="cloud" style="top:30px">☁️</div>
-<div class="cloud" style="top:60px; animation-delay:2s">☁️</div>
-<div class="tap">🚰</div>
-<div class="water"></div>
-<div class="house">
-<div class="roof"></div>
-<div class="door"></div>
-</div>
-<div class="text" id="t">Sun is Rising... Subah ho gayi!</div>
-</div>
-<button onclick="next()">Next →</button>
+<canvas id="c"></canvas>
 <script>
-let s=0;
-let lines=["Sun is Rising... Subah ho gayi! ☀️","Ghar me Nal khula reh gaya! 🚰","Paani waste ho raha hai! 💧","Arre paani bachao! Jaldi band karo!","Pani bach gaya! Good Job! ❤️"];
-function next(){s=(s+1)%lines.length;document.getElementById('t').innerText=lines[s]}
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight}
+resize();addEventListener('resize',resize);
+let birds=[];for(let i=0;i<7;i++)birds.push({x:Math.random()*innerWidth,y:Math.random()*200+20,vx:1+Math.random()*1.5,w:0});
+let t=0;
+function drawHouse(x,y){
+ctx.fillStyle='#FFDAB9';ctx.fillRect(x,y,120,80);
+ctx.fillStyle='#FF6347';ctx.beginPath();ctx.moveTo(x-10,y);ctx.lineTo(x+60,y-50);ctx.lineTo(x+130,y);ctx.closePath();ctx.fill();
+ctx.fillStyle='#8B4513';ctx.fillRect(x+45,y+35,30,45);
+}
+function drawBench(x,y){
+ctx.fillStyle='#8B4513';ctx.fillRect(x,y+40,100,8);ctx.fillRect(x+10,y+48,8,25);ctx.fillRect(x+80,y+48,8,25);
+ctx.fillStyle='#FF69B4';ctx.beginPath();ctx.ellipse(x+50,y+25,18,22,0,0,6.28);ctx.fill();
+ctx.fillStyle='#FFDBAC';ctx.beginPath();ctx.arc(x+50,y+2,16,0,6.28);ctx.fill();
+}
+function drawTap(x,y){
+ctx.fillStyle='#A9A9A9';ctx.fillRect(x,y-60,12,80);ctx.fillRect(x-20,y-60,40,10);
+ctx.fillStyle='rgba(64,164,223,0.8)';ctx.fillRect(x+22,y-47,6,70);
+ctx.fillStyle='#FF6347';ctx.beginPath();ctx.moveTo(x-10,y+20);ctx.lineTo(x+50,y+20);ctx.lineTo(x+45,y+65);ctx.lineTo(x-5,y+65);ctx.closePath();ctx.fill();
+ctx.fillStyle='rgba(64,164,223,0.7)';ctx.fillRect(x-8,y+22,56,20+Math.sin(t/40)*10+20);
+}
+function drawFarmer(x,y){
+let bx=x+(t*0.5)%(innerWidth+400)-200;
+ctx.fillStyle='#8B4513';ctx.fillRect(bx,y,50,28);ctx.fillRect(bx+45,y-5,18,18);
+ctx.fillStyle='#A0522D';ctx.fillRect(bx+55,y,50,28);ctx.fillRect(bx+100,y-5,18,18);
+ctx.fillStyle='#FF4500';ctx.fillRect(bx+130,y-15,20,25);
+}
+function loop(){
+let g=ctx.createLinearGradient(0,0,0,canvas.height);g.addColorStop(0,'#87CEEB');g.addColorStop(1,'#98FB98');
+ctx.fillStyle=g;ctx.fillRect(0,0,canvas.width,canvas.height);
+ctx.fillStyle='#FFD700';ctx.beginPath();ctx.arc(canvas.width-120,90,45,0,6.28);ctx.fill();
+ctx.fillStyle='white';birds.forEach(b=>{b.x+=b.vx;b.w+=0.3;if(b.x>canvas.width+50)b.x=-50;ctx.beginPath();ctx.ellipse(b.x,b.y,8,4,0,0,6.28);ctx.fill();});
+ctx.fillStyle='#8FBC8F';ctx.fillRect(0,canvas.height*0.6,canvas.width,canvas.height*0.4);
+drawHouse(canvas.width-220,canvas.height*0.55-40);
+drawBench(60,canvas.height*0.58);
+drawTap(canvas.width*0.55,canvas.height*0.62);
+drawFarmer(0,canvas.height*0.72);
+ctx.fillStyle='rgba(255,255,255,0.7)';
+for(let i=0;i<15;i++){if(Math.random()>0.7){ctx.beginPath();ctx.arc(Math.random()*canvas.width,Math.random()*canvas.height,Math.random()*2+1,0,6.28);ctx.fill();}}
+t++;requestAnimationFrame(loop);
+}
+loop();
 </script>
 </body>
 </html>

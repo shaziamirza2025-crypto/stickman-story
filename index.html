@@ -17,67 +17,55 @@ h1{position:fixed;top:10px;width:100%;text-align:center;font-family:cursive;colo
 let C=document.getElementById('c'),X=C.getContext('2d');
 function R(){C.width=innerWidth;C.height=innerHeight}R();
 addEventListener('resize',R);
-let t=0;
+let t=0, sx2=130, dir=1, step=0;
 function draw(){
-t+=0.14;
+t+=0.14; step+=0.2;
 X.clearRect(0,0,C.width,C.height);
 X.fillStyle='#87CEEB';X.fillRect(0,0,C.width,C.height);
 X.fillStyle='#7AC87A';X.fillRect(0,C.height-80,C.width,80);
 
-// === CORNER HOUSE ===
-let hx=30, hy=C.height-220;
-// house body
-X.fillStyle='#FFE4B5';X.fillRect(hx,hy,110,90);
-X.fillStyle='#E74C3C';X.beginPath();X.moveTo(hx-10,hy);X.lineTo(hx+55,hy-40);X.lineTo(hx+120,hy);X.closePath();X.fill();
-X.fillStyle='#8B4513';X.fillRect(hx+45,hy+45,25,45); // door
-X.fillStyle='#87CEEB';X.strokeStyle='#8B4513';X.lineWidth=2;
-X.fillRect(hx+10,hy+15,25,25);X.strokeRect(hx+10,hy+15,25,25);
-X.fillRect(hx+75,hy+15,25,25);X.strokeRect(hx+75,hy+15,25,25);
-// chimney
-X.fillStyle='#555';X.fillRect(hx+80,hy-25,12,30);
-X.fillStyle='#DDD';X.beginPath();X.arc(hx+86,hy-30,15,0,6.28);X.fill();
-
-// === SURAJ aankhen kirnen ===
-let sx=C.width-110, sy=95;
-X.save();X.translate(sx,sy);X.rotate(t*0.02);
+// === SURAJ right side ===
+let sunX=C.width-110, sunY=95;
+X.save();X.translate(sunX,sunY);X.rotate(t*0.02);
 X.strokeStyle='#FFD700';X.lineWidth=4;
 for(let i=0;i<12;i++){X.rotate(Math.PI/6);X.beginPath();X.moveTo(55,0);X.lineTo(75,0);X.stroke();}
 X.restore();
-X.fillStyle='#FFD700';X.beginPath();X.arc(sx,sy,48,0,6.28);X.fill();
-X.fillStyle='black';X.beginPath();X.arc(sx-14,sy-8,4,0,6.28);X.arc(sx+14,sy-8,4,0,6.28);X.fill();
-X.strokeStyle='black';X.lineWidth=2;X.beginPath();X.arc(sx,sy+10,13,0.2,Math.PI-0.2);X.stroke();
+X.fillStyle='#FFD700';X.beginPath();X.arc(sunX,sunY,48,0,6.28);X.fill();
+X.fillStyle='black';X.beginPath();X.arc(sunX-14,sunY-8,4,0,6.28);X.arc(sunX+14,sunY-8,4,0,6.28);X.fill();
+X.strokeStyle='black';X.lineWidth=2;X.beginPath();X.arc(sunX,sunY+10,13,0.2,Math.PI-0.2);X.stroke();
 
-// === BENCH ===
+// === GHAR SURAJ WALI SIDE (right corner) ===
+let hx=C.width-150, hy=C.height-210;
+X.fillStyle='#FFE4B5';X.fillRect(hx,hy,110,90);
+X.fillStyle='#E74C3C';X.beginPath();X.moveTo(hx-10,hy);X.lineTo(hx+55,hy-40);X.lineTo(hx+120,hy);X.closePath();X.fill();
+X.fillStyle='#8B4513';X.fillRect(hx+45,hy+45,25,45);
+X.fillStyle='#87CEEB';X.strokeStyle='#8B4513';X.lineWidth=2;
+X.fillRect(hx+10,hy+15,25,25);X.strokeRect(hx+10,hy+15,25,25);
+X.fillRect(hx+75,hy+15,25,25);X.strokeRect(hx+75,hy+15,25,25);
+X.fillStyle='#666';X.fillRect(hx+75,hy-25,12,30);
+
+// === BENCH center ===
 let bx=C.width*0.5-70, by=C.height-140;
 X.fillStyle='#8B4513';X.fillRect(bx,by,150,8);X.fillRect(bx,by+28,150,8);
 X.fillRect(bx+8,by+8,12,40);X.fillRect(bx+130,by+8,12,40);
 
-// === AURAT STICKY with lips ===
+// === AURAT sticky with lips ===
 let wx=bx+75, wy=by;
 X.strokeStyle='black';X.lineWidth=3.5;X.lineCap='round';
-// head
 X.beginPath();X.arc(wx,wy-42,16,0,6.28);X.stroke();
-// hair - ponytail
 X.beginPath();X.arc(wx-4,wy-48,16,Math.PI*0.8,Math.PI*1.8);X.stroke();
-X.beginPath();X.moveTo(wx+12,wy-42);X.lineTo(wx+22,wy-35);X.stroke();
-// body
 X.beginPath();X.moveTo(wx,wy-26);X.lineTo(wx,wy+2);X.stroke();
-// skirt
 X.beginPath();X.moveTo(wx-14,wy+2);X.lineTo(wx+14,wy+2);X.lineTo(wx+10,wy+16);X.lineTo(wx-10,wy+16);X.closePath();X.stroke();
-// legs sitting
 X.beginPath();X.moveTo(wx-7,wy+16);X.lineTo(wx-7,wy+28);X.lineTo(wx-14,wy+28);X.stroke();
 X.beginPath();X.moveTo(wx+7,wy+16);X.lineTo(wx+7,wy+28);X.lineTo(wx+14,wy+28);X.stroke();
-// arms
 X.beginPath();X.moveTo(wx,wy-18);X.lineTo(wx-18,wy-5);X.moveTo(wx,wy-18);X.lineTo(wx+18,wy-5);X.stroke();
-// eyes
 X.fillStyle='black';X.beginPath();X.arc(wx-5,wy-45,2,0,6.28);X.arc(wx+5,wy-45,2,0,6.28);X.fill();
-// LIPS hilte hue
 let m1=Math.abs(Math.sin(t*0.4+1))*6+1;
 X.fillStyle='#FF3366';X.beginPath();X.ellipse(wx,wy-34,6,m1,0,0,6.28);X.fill();
 X.strokeStyle='black';X.lineWidth=1;X.stroke();
 
-// === BILI thoda door, bench ke saath fix nahi ===
-let cx=bx+200, cy=C.height-85; // 80px door
+// === BILI door ===
+let cx=bx+200, cy=C.height-85;
 let tailWag=Math.sin(t)*1.2;
 X.fillStyle='orange';X.beginPath();X.arc(cx,cy-15,13,0,6.28);X.fill();
 X.fillStyle='black';X.beginPath();X.arc(cx-4,cy-18,2,0,6.28);X.arc(cx+4,cy-18,2,0,6.28);X.fill();
@@ -90,19 +78,22 @@ X.beginPath();X.moveTo(cx+17,cy);
 X.quadraticCurveTo(cx+28+tailWag*12,cy-12,cx+38,cy+4-Math.sin(t*1.5)*6);
 X.stroke();
 
-// === STICKMAN bolta ===
-let sx2=130, sy2=C.height-80;
+// === STICKMAN CHALTA HUA ===
+let sy2=C.height-80;
+// walk
+sx2+=dir*1.2;
+if(sx2>C.width*0.4 || sx2<80) dir*=-1;
+let leg1=Math.sin(step)*18, leg2=Math.sin(step+Math.PI)*18;
+let arm1=Math.sin(step)*15, arm2=Math.sin(step+Math.PI)*15;
+
 X.strokeStyle='black';X.lineWidth=3.5;
-// head
 X.beginPath();X.arc(sx2,sy2-100,20,0,6.28);X.stroke();
-// body
 X.beginPath();X.moveTo(sx2,sy2-80);X.lineTo(sx2,sy2-35);X.stroke();
-// arms/legs
-X.beginPath();X.moveTo(sx2,sy2-65);X.lineTo(sx2-26,sy2-50);X.moveTo(sx2,sy2-65);X.lineTo(sx2+26,sy2-50);X.stroke();
-X.beginPath();X.moveTo(sx2,sy2-35);X.lineTo(sx2-16,sy2);X.moveTo(sx2,sy2-35);X.lineTo(sx2+16,sy2);X.stroke();
-// eyes
+// arms hilte
+X.beginPath();X.moveTo(sx2,sy2-65);X.lineTo(sx2-20+arm1*0.3,sy2-50);X.moveTo(sx2,sy2-65);X.lineTo(sx2+20+arm2*0.3,sy2-50);X.stroke();
+// legs chalte
+X.beginPath();X.moveTo(sx2,sy2-35);X.lineTo(sx2-10+leg1,sy2);X.moveTo(sx2,sy2-35);X.lineTo(sx2+10+leg2,sy2);X.stroke();
 X.fillStyle='black';X.beginPath();X.arc(sx2-7,sy2-105,2,0,6.28);X.arc(sx2+7,sy2-105,2,0,6.28);X.fill();
-// lips hilte
 let m2=Math.abs(Math.sin(t*0.55))*7+2;
 X.fillStyle='#FF4444';X.beginPath();X.ellipse(sx2,sy2-90,7,m2,0,0,6.28);X.fill();
 X.strokeStyle='black';X.lineWidth=1;X.stroke();

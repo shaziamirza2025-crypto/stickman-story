@@ -7,7 +7,7 @@
 <style>
 body{margin:0;background:#87CEEB;overflow:hidden;font-family:cursive}
 canvas{width:100vw;height:100vh;display:block}
-#msg{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:28px 42px;border-radius:15px;display:none;text-align:center;z-index:20;box-shadow:0 0 30px rgba(0,0,0,0.7);overflow:hidden}
+#msg{position:fixed;top:35%;left:50%;transform:translate(-50%,-50%);background:white;padding:28px 42px;border-radius:15px;display:none;text-align:center;z-index:20;box-shadow:0 0 30px rgba(0,0,0,0.7);overflow:hidden}
 #msg h2{margin:0 0 8px;font-size:24px;animation:colorChange 0.8s infinite}
 #msg p{margin:4px 0;font-weight:bold;font-size:17px;animation:colorChange 0.8s infinite 0.2s}
 @keyframes colorChange{0%{color:#FF0000}25%{color:#2196F3}50%{color:#4CAF50}75%{color:#FF9800}100%{color:#FF0000}}
@@ -138,15 +138,12 @@ X.restore();
 X.fillStyle='#FFD700';X.beginPath();X.arc(sunX,sunY,40,0,6.28);X.fill();
 X.fillStyle='black';X.beginPath();X.arc(sunX-12,sunY-7,3.5,0,6.28);X.arc(sunX+12,sunY-7,3.5,0,6.28);X.fill();
 X.strokeStyle='black';X.lineWidth=2;X.beginPath();X.arc(sunX,sunY+8,10,0.2,Math.PI-0.2);X.stroke();
-
-// === BOARD FIX - THORA OPER, VISIBLE ===
-let boardX=15, boardY=35; // oper kar diya taake tab visible ho
+let boardX=15, boardY=35;
 X.fillStyle='#2196F3';X.fillRect(boardX,boardY,190,60);
 X.strokeStyle='#0D47A1';X.lineWidth=3;X.strokeRect(boardX,boardY,190,60);
 X.fillStyle='white';X.font='bold 13px Arial';X.fillText('💧 PANI BACHAO 💧',boardX+18,boardY+20);
 X.font='bold 11px Arial';X.fillText(tapOpen?'⚠️ Nal Khula Hai!':'✅ Nal Band!',boardX+28,boardY+38);
 X.fillText('Pani Zindagi Hai',boardX+32,boardY+53);
-
 X.fillStyle='#FFE4B5';X.fillRect(hx,hy,220,180);
 X.fillStyle='#E74C3C';X.beginPath();X.moveTo(hx-20,hy);X.lineTo(hx+110,hy-70);X.lineTo(hx+240,hy);X.closePath();X.fill();
 X.fillStyle='#8B4513';X.fillRect(hx+85,hy+90,45,90);

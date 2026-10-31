@@ -1,1 +1,23 @@
-<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>Step 4 - Faqeer at Seth House</title><style>body{margin:0;background:#111;display:flex;justify-content:center;align-items:center;height:100vh;font-family:sans-serif}canvas{background:#87CEEB;border:4px solid #fff;border-radius:20px}#msg{position:absolute;bottom:20px;background:white;padding:10px 20px;border-radius:20px;font-weight:bold}</style></head><body><canvas id="c" width="360" height="640"></canvas><div id="msg">Faqeera Seth ke ghar ja raha hai...</div><script>const cv=document.getElementById('c'),x=cv.getContext('2d'),msg=document.getElementById('msg');let p=50,d=1,s=0,state=0,timer=0;function draw(){x.clearRect(0,0,360,640);x.fillStyle="#87CEEB";x.fillRect(0,0,360,400);x.fillStyle="#90EE90";x.fillRect(0,400,360,240);x.fillStyle="#8B4513";x.fillRect(200,250,120,150);x.fillStyle="#A0522D";x.beginPath();x.moveTo(200,250);x.lineTo(260,210);x.lineTo(320,250);x.fill();x.fillStyle="white";x.font="bold 12px sans-serif";x.fillText("SETH HOUSE",215,280);let fy=350;if(state==0){fy=350;p+=d*1.5;s+=0.2;if(p>180){state=1;msg.innerText="Pahunch gaya! Ab baith raha hai...";}}if(state==1){timer++;fy=350+timer*0.5;if(timer>60){state=2;msg.innerText="Seth ji... Bheek de do...";}}if(state==2){fy=410;x.fillStyle="black";x.font="bold 18px sans-serif";x.fillText("Bheek de do Seth ji!",60,300)}x.strokeStyle="black";x.lineWidth=3;x.beginPath();x.arc(p,fy-30,18,0,7);x.stroke();x.beginPath();x.moveTo(p,fy-12);x.lineTo(p,fy+30);x.stroke();if(state<2){let l=Math.sin(s)*15;x.beginPath();x.moveTo(p,fy+30);x.lineTo(p-10+l,fy+70);x.moveTo(p,fy+30);x.lineTo(p+10-l,fy+70);x.stroke();}else{x.beginPath();x.moveTo(p,fy+30);x.lineTo(p-20,fy+70);x.lineTo(p-10,fy+70);x.moveTo(p,fy+30);x.lineTo(p+20,fy+70);x.lineTo(p+30,fy+70);x.stroke();x.beginPath();x.moveTo(p,fy-5);x.lineTo(p-15,fy+10);x.stroke();}requestAnimationFrame(draw)}draw();</script></body></html>
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>Comedy Faqeer</title><style>body{margin:0;background:#000;display:flex;justify-content:center;align-items:center;height:100vh}canvas{border:4px solid #fff;border-radius:20px}#b{position:absolute;bottom:20px;background:yellow;padding:10px 20px;border-radius:30px;font:bold 14px sans-serif}</style></head><body><canvas id="c" width="360" height="640"></canvas><div id="b">Faqeera ja raha hai...</div><script>
+const cv=document.getElementById('c'),x=cv.getContext('2d'),b=document.getElementById('b');
+let p=30,fy=360,s=0,state=0,t=0,vx=0,vy=0;
+function draw(){
+x.fillStyle="#87CEEB";x.fillRect(0,0,360,400);x.fillStyle="#90EE90";x.fillRect(0,400,360,240);
+x.fillStyle="#8B4513";x.fillRect(200,250,120,150);x.fillStyle="#654321";x.beginPath();x.moveTo(200,250);x.lineTo(260,200);x.lineTo(320,250);x.fill();
+x.fillStyle="white";x.font="bold 11px sans-serif";x.fillText("SETH KA GHAR",210,280);
+// Seth
+if(state>=1){x.fillStyle="#000";x.beginPath();x.arc(260,340,15,0,7);x.fill();x.fillStyle="red";x.fillRect(250,355,20,25);x.fillStyle="black";x.fillText("SETH",245,400)}
+if(state==0){p+=2;s+=0.3;if(p>180){state=1;b.innerText="Faqeer: Seth ji bheek de do! 🙏";}}
+if(state==1){t++;if(t>100){state=2;t=0;b.innerText="Seth: ABE BHAG YAHAN SE! 😡";}}
+if(state==2){t++;if(t>60){state=3;vx=8;vy=-8;b.innerText="DHAAAM! Laat par gayi! 💥";}}
+if(state==3){p+=vx;fy+=vy;vy+=0.6;vx*=0.99;if(fy>500){state=4;fy=500;b.innerText="Faqeera gir gaya! Hahaha 😂 Tap to Replay";}}
+if(state==4){x.font="bold 24px sans-serif";x.fillStyle="yellow";x.fillText("HA HA HA!",110,200)}
+// Faqeer
+x.strokeStyle="black";x.lineWidth=3;x.beginPath();x.arc(p,fy-30,18,0,7);x.stroke();
+x.beginPath();x.moveTo(p,fy-12);x.lineTo(p,fy+30);x.stroke();
+if(state<3){let l=Math.sin(s)*15;x.beginPath();x.moveTo(p,fy+30);x.lineTo(p-10+l,fy+70);x.moveTo(p,fy+30);x.lineTo(p+10-l,fy+70);x.stroke();}else{x.beginPath();x.moveTo(p,fy+30);x.lineTo(p-20,fy+80);x.moveTo(p,fy+30);x.lineTo(p+20,fy+80);x.stroke();}
+requestAnimationFrame(draw);
+}
+cv.onclick=()=>{if(state==4){p=30;fy=360;state=0;t=0;vx=0;vy=0;b.innerText="Faqeera ja raha hai...";}}
+draw();
+</script></body></html>

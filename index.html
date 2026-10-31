@@ -7,18 +7,28 @@
 <style>
 body{margin:0;background:#87CEEB;overflow:hidden;font-family:cursive}
 canvas{width:100vw;height:100vh;display:block}
-#msg{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:18px 25px;border-radius:15px;border:4px solid #2196F3;display:none;text-align:center;z-index:20}
-#msg h2{color:#2196F3;margin:0 0 8px}
-#replay{margin-top:8px;padding:7px 14px;background:#2196F3;color:white;border:none;border-radius:8px;cursor:pointer}
+#msg{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:25px 35px;border-radius:15px;display:none;text-align:center;z-index:20;box-shadow:0 0 30px rgba(0,0,0,0.6)}
+#msg h2{color:#2196F3;margin:0 0 8px;font-size:22px}
+#msg p{margin:4px 0;font-weight:bold;font-size:16px}
+#replay{margin-top:12px;padding:8px 18px;background:#2196F3;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:bold}
+/* Blinking Corners */
+.corner{position:absolute;width:25px;height:25px;border:4px solid #FF0000;}
+.c1{top:-4px;left:-4px;border-right:none;border-bottom:none;border-radius:10px 0 0 0;animation:blink 0.5s infinite}
+.c2{top:-4px;right:-4px;border-left:none;border-bottom:none;border-radius:0 10px 0 0;animation:blink 0.5s infinite 0.1s}
+.c3{bottom:-4px;left:-4px;border-right:none;border-top:none;border-radius:0 0 0 10px;animation:blink 0.5s infinite 0.2s}
+.c4{bottom:-4px;right:-4px;border-left:none;border-top:none;border-radius:0 0 10px 0;animation:blink 0.5s infinite 0.3s}
+@keyframes blink{0%,100%{border-color:#FF0000;box-shadow:0 0 5px red}50%{border-color:#FFFF00;box-shadow:0 0 15px yellow;}}
 h1{position:fixed;top:8px;width:100%;text-align:center;color:#333;z-index:10;font-size:18px}
 </style>
 </head>
 <body>
 <h1>💧 Pani Bachao - Stickman Story 💧</h1>
 <div id="msg">
+<div class="corner c1"></div><div class="corner c2"></div><div class="corner c3"></div><div class="corner c4"></div>
 <h2>💧 PANI BACHAO! 💧</h2>
 <p>🚫 Pani Waste Na Karain</p>
 <p>💙 Pani Zindagi Hai 💙</p>
+<p style="font-size:13px;color:green;margin-top:8px">🌟 Stickman Hero 🌟</p>
 <button id="replay" onclick="resetStory()">Dobara Dekho 🔄</button>
 </div>
 <canvas id="c"></canvas>
@@ -27,8 +37,7 @@ let C=document.getElementById('c'),X=C.getContext('2d');
 function R(){C.width=innerWidth;C.height=innerHeight}R();
 addEventListener('resize',R);
 let t=0, sx2=80, step=0, catX=0, catDir=1;
-let tapOpen=true, waterParticles=[], storyState=0, closeProgress=0;
-let tapX=0, tapY=0;
+let tapOpen=true, waterParticles=[], storyState=0, closeProgress=0, tapX=0, tapY=0;
 function resetStory(){
   tapOpen=true; storyState=0; closeProgress=0; sx2=80; catX=C.width-320;
   waterParticles=[]; document.getElementById('msg').style.display='none';
@@ -39,14 +48,10 @@ t+=0.14; step+=0.2; catX+=catDir*0.8;
 let houseLeft=C.width-260, houseRight=C.width-40;
 if(catX>houseRight-30) catDir=-1;
 if(catX<houseLeft-20) catDir=1;
-
 X.clearRect(0,0,C.width,C.height);
 X.fillStyle='#87CEEB';X.fillRect(0,0,C.width,C.height);
 X.fillStyle='#7AC87A';X.fillRect(0,C.height-80,C.width,80);
-
 tapX=C.width*0.5; tapY=C.height-200;
-
-// === SURAJ ===
 let sunX=C.width-110, sunY=85;
 X.save();X.translate(sunX,sunY);X.rotate(t*0.02);
 X.strokeStyle='#FFD700';X.lineWidth=4;
@@ -55,15 +60,11 @@ X.restore();
 X.fillStyle='#FFD700';X.beginPath();X.arc(sunX,sunY,40,0,6.28);X.fill();
 X.fillStyle='black';X.beginPath();X.arc(sunX-12,sunY-7,3.5,0,6.28);X.arc(sunX+12,sunY-7,3.5,0,6.28);X.fill();
 X.strokeStyle='black';X.lineWidth=2;X.beginPath();X.arc(sunX,sunY+8,10,0.2,Math.PI-0.2);X.stroke();
-
-// === BOARD ===
 X.fillStyle='#2196F3';X.fillRect(20,90,185,70);
 X.strokeStyle='#0D47A1';X.lineWidth=3;X.strokeRect(20,90,185,70);
 X.fillStyle='white';X.font='bold 13px Arial';X.fillText('💧 PANI BACHAO 💧',30,110);
 X.font='bold 11px Arial';X.fillText(tapOpen?'Nal Khula Hai!':'✅ Nal Band!',40,130);
 X.fillText('Pani Zindagi Hai',45,148);
-
-// === GHAR BADA RIGHT SIDE ===
 let hx=C.width-260, hy=C.height-300;
 X.fillStyle='#FFE4B5';X.fillRect(hx,hy,220,180);
 X.fillStyle='#E74C3C';X.beginPath();X.moveTo(hx-20,hy);X.lineTo(hx+110,hy-70);X.lineTo(hx+240,hy);X.closePath();X.fill();
@@ -74,15 +75,11 @@ X.fillRect(hx+15,hy+20,50,50);X.strokeRect(hx+15,hy+20,50,50);
 X.fillRect(hx+155,hy+20,50,50);X.strokeRect(hx+155,hy+20,50,50);
 X.fillStyle='#555';X.fillRect(hx+150,hy-45,22,55);
 X.fillStyle='#DDD';X.beginPath();X.arc(hx+161,hy-48,20,0,6.28);X.fill();
-
-// === TAP ===
 X.fillStyle='#999';X.fillRect(tapX-50,tapY,90,16);
 X.fillStyle='#777';X.fillRect(tapX+30,tapY-12,16,60);
 X.fillStyle=tapOpen?'#E74C3C':'#2ECC71';
 X.beginPath();X.arc(tapX+38,tapY+42,16,0,6.28);X.fill();
 X.fillStyle='white';X.font='bold 10px Arial';X.fillText(tapOpen?'OPEN':'CLOSE',tapX+18,tapY+46);
-
-// === PANI ===
 if(tapOpen && Math.random()>0.25){
   waterParticles.push({x:tapX+38+Math.random()*6-3, y:tapY+55, vy:Math.random()*4+3, vx:Math.random()*0.8-0.4, life:1});
 }
@@ -92,21 +89,15 @@ for(let i=waterParticles.length-1;i>=0;i--){
     p.y+=p.vy; p.x+=p.vx||0; p.vy+=0.18; p.life-=0.01;
     X.fillStyle=`rgba(33,150,243,${p.life})`;
     X.beginPath();X.arc(p.x,p.y,6,0,6.28);X.fill();
-    X.fillStyle=`rgba(200,230,255,${p.life})`;
-    X.beginPath();X.arc(p.x-1,p.y-1,2,0,6.28);X.fill();
     if(p.y>C.height-80 || p.life<=0) waterParticles.splice(i,1);
   }
 }
 if(!tapOpen && waterParticles.length>0 && t%3==0) waterParticles.pop();
-
-// === BENCH LEFT SIDE - FIXED ===
 let bx=30, by=C.height-150;
 X.fillStyle='#5D4037';X.fillRect(bx+15,by+15,12,45);X.fillRect(bx+105,by+15,12,45);
 X.fillStyle='#8B4513';X.fillRect(bx,by,130,14);
 X.fillRect(bx,by-30,130,12);
 X.fillRect(bx+15,by-30,10,44);X.fillRect(bx+105,by-30,10,44);
-
-// === AURAT LEFT BENCH PAR - LEGS NEECHAY ===
 let wx=bx+65, wy=by;
 X.strokeStyle='black';X.lineWidth=3;X.lineCap='round';
 X.beginPath();X.arc(wx,wy-38,14,0,6.28);X.stroke();
@@ -120,39 +111,26 @@ X.fillStyle='black';X.beginPath();X.arc(wx-4,wy-41,1.8,0,6.28);X.arc(wx+4,wy-41,
 let m1=Math.abs(Math.sin(t*0.4+1))*4+1;
 X.fillStyle='#FF3366';X.beginPath();X.ellipse(wx,wy-31,4,m1,0,0,6.28);X.fill();
 X.strokeStyle='black';X.lineWidth=1;X.stroke();
-
-// === BILI - ASLI BILI GHAR KE PAAS CHALTI HUI ===
 let cy=C.height-88;
 let catWalk=Math.sin(step*1.5)*6;
 let tailWag=Math.sin(t)*1.3;
-// cat body
 X.fillStyle='#FFA500';
 X.beginPath();X.ellipse(catX,cy-5,18,10,0,0,6.28);X.fill();
-// legs chalte hue
 X.fillStyle='#FF8C00';
 X.beginPath();X.ellipse(catX-8+catWalk*0.3,cy+2,4,6,0,0,6.28);X.fill();
 X.beginPath();X.ellipse(catX+8-catWalk*0.3,cy+2,4,6,0,0,6.28);X.fill();
-// head
 X.fillStyle='#FFA500';X.beginPath();X.arc(catX+18*catDir,cy-12,12,0,6.28);X.fill();
-// ears pointed
 X.beginPath();X.moveTo(catX+12*catDir,cy-20);X.lineTo(catX+10*catDir,cy-30);X.lineTo(catX+18*catDir,cy-22);X.fill();
 X.beginPath();X.moveTo(catX+22*catDir,cy-20);X.lineTo(catX+24*catDir,cy-30);X.lineTo(catX+28*catDir,cy-22);X.fill();
-// inner ears pink
 X.fillStyle='pink';X.beginPath();X.arc(catX+13*catDir,cy-23,2.5,0,6.28);X.arc(catX+23*catDir,cy-23,2.5,0,6.28);X.fill();
-// eyes
 X.fillStyle='green';X.beginPath();X.arc(catX+22*catDir,cy-14,3,0,6.28);X.arc(catX+28*catDir,cy-14,3,0,6.28);X.fill();
 X.fillStyle='black';X.beginPath();X.arc(catX+22*catDir,cy-14,1,0,6.28);X.arc(catX+28*catDir,cy-14,1,0,6.28);X.fill();
-// nose
 X.fillStyle='pink';X.beginPath();X.arc(catX+30*catDir,cy-10,1.5,0,6.28);X.fill();
-// whiskers
 X.strokeStyle='black';X.lineWidth=0.8;
 X.beginPath();X.moveTo(catX+30*catDir,cy-11);X.lineTo(catX+36*catDir,cy-13);X.moveTo(catX+30*catDir,cy-10);X.lineTo(catX+36*catDir,cy-10);X.stroke();
-// tail hilti hui
 X.strokeStyle='#FF8C00';X.lineWidth=6;X.lineCap='round';
 X.beginPath();X.moveTo(catX-18,cy-5);
 X.quadraticCurveTo(catX-28+tailWag*8,cy-12,catX-32,cy-2);X.stroke();
-
-// === STICKMAN HERO ===
 let sy2=C.height-80;
 if(storyState==0){
   if(sx2 < tapX-55){ sx2+=1.8; }
@@ -160,7 +138,7 @@ if(storyState==0){
 }
 if(storyState==1){
   closeProgress+=0.035;
-  if(closeProgress>=1){ tapOpen=false; storyState=2; setTimeout(()=>{document.getElementById('msg').style.display='block'; storyState=3;},700); }
+  if(closeProgress>=1){ tapOpen=false; storyState=2; setTimeout(()=>{document.getElementById('msg').style.display='block'; storyState=3;},1200); }
 }
 let leg1=Math.sin(step)*16, leg2=Math.sin(step+Math.PI)*16;
 let arm1=Math.sin(step)*12, arm2=Math.sin(step+Math.PI)*12;
@@ -179,7 +157,6 @@ X.fillStyle='black';X.beginPath();X.arc(sx2-6,sy2-90,2,0,6.28);X.arc(sx2+6,sy2-9
 let m2=storyState==1?2:Math.abs(Math.sin(t*0.6))*6+1;
 X.fillStyle='#FF4444';X.beginPath();X.ellipse(sx2,sy2-78,6,m2,0,0,6.28);X.fill();
 X.strokeStyle='black';X.lineWidth=1;X.stroke();
-
 requestAnimationFrame(draw);
 }
 draw();

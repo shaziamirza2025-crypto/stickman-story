@@ -3,22 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stickman Story</title>
 <style>
-body{margin:0;overflow:hidden;background:#000}
-.bg{position:fixed;inset:0;background:url(background.jpg) center/cover}
-h1{position:fixed;top:12px;width:100%;text-align:center;color:white;font-family:cursive;font-size:30px;text-shadow:0 0 15px gold}
-#g{position:fixed;inset:0;pointer-events:none}
+body{margin:0;background:#f0f0f0;overflow:hidden}
+canvas{width:100vw;height:100vh;display:block}
+h1{position:fixed;top:15px;width:100%;text-align:center;font-family:cursive}
 </style>
 </head>
 <body>
-<div class="bg"></div>
-<canvas id="g"></canvas>
-<h1>✨ Mera Chamkeela Gaon ✨</h1>
+<h1>✨ Stickman Story ✨</h1>
+<canvas id="c"></canvas>
 <script>
-let C=document.getElementById('g'),X=C.getContext('2d');function R(){C.width=innerWidth;C.height=innerHeight}R();
+let C=document.getElementById('c'),X=C.getContext('2d');
+function R(){C.width=innerWidth;C.height=innerHeight}R();
 addEventListener('resize',R);
-let P=[];for(let i=0;i<100;i++)P.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*2+0.5});
-(function L(){X.clearRect(0,0,C.width,C.height);P.forEach(p=>{p.y-=0.5;if(p.y<0)p.y=C.height;X.fillStyle='white';X.shadowColor='gold';X.shadowBlur=10;X.beginPath();X.arc(p.x,p.y,p.r,0,6.28);X.fill();X.shadowBlur=0});requestAnimationFrame(L)})();
+let x=100, dir=1;
+function draw(){
+X.clearRect(0,0,C.width,C.height);
+// ground
+X.fillStyle='#7AC87A';X.fillRect(0,C.height-80,C.width,80);
+// stickman
+let y=C.height-80;
+X.strokeStyle='black';X.lineWidth=4;X.lineCap='round';
+// head
+X.beginPath();X.arc(x,y-100,20,0,6.28);X.stroke();
+// body
+X.beginPath();X.moveTo(x,y-80);X.lineTo(x,y-40);X.stroke();
+// arms
+X.beginPath();X.moveTo(x,y-70);X.lineTo(x-25,y-50);X.moveTo(x,y-70);X.lineTo(x+25,y-50);X.stroke();
+// legs
+X.beginPath();X.moveTo(x,y-40);X.lineTo(x-20,y);X.moveTo(x,y-40);X.lineTo(x+20,y);X.stroke();
+// eyes
+X.fillStyle='black';X.beginPath();X.arc(x-7,y-105,2,0,6.28);X.arc(x+7,y-105,2,0,6.28);X.fill();
+x+=dir*2;
+if(x>C.width-50 || x<50) dir*=-1;
+requestAnimationFrame(draw);
+}
+draw();
 </script>
 </body>
 </html>

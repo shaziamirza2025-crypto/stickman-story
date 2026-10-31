@@ -1,53 +1,57 @@
-<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>Suraj with Eyes</title><style>body{margin:0;background:#111;display:flex;justify-content:center;align-items:center;height:100vh}canvas{border:4px solid white;border-radius:15px}</style></head><body><canvas id="c" width="360" height="640"></canvas><script>
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>Oonche Zinda Darakht</title><style>body{margin:0;background:#111;display:flex;justify-content:center;align-items:center;height:100vh}canvas{border:4px solid white;border-radius:15px}</style></head><body><canvas id="c" width="360" height="640"></canvas><script>
 const cv=document.getElementById('c'), x=cv.getContext('2d');
-let t=0;
-let flowers=[]; for(let i=0;i<30;i++){flowers.push({x:10+Math.random()*130, y:400+Math.random()*160, type:Math.floor(Math.random()*3)})}
+let t=0, leaves=[];
+for(let i=0;i<15;i++) leaves.push({x:20+Math.random()*120, y:Math.random()*200+200, vx:(Math.random()-0.5)*0.5, vy:Math.random()*0.8+0.3, r:Math.random()*4+2});
+
+let flowers=[]; for(let i=0;i<30;i++) flowers.push({x:5+Math.random()*135, y:450+Math.random()*120, type:Math.floor(Math.random()*3)})
 
 function draw(){
- t+=0.05;
+ t+=0.03;
  x.fillStyle="#87CEEB"; x.fillRect(0,0,360,360);
  x.fillStyle="#7CFC00"; x.fillRect(0,360,360,280);
 
- // SUN WITH RAYS AND EYES ☀️👀
- let sunX=280, sunY=80;
- // Kirnein - chamakti hui
- x.strokeStyle="rgba(255,215,0,0.8)"; x.lineWidth=3;
- for(let i=0;i<12;i++){
-   let ang=(i/12)*Math.PI*2 + t*0.5;
-   let len=15+Math.sin(t*3+i)*8;
-   x.beginPath();
-   x.moveTo(sunX+Math.cos(ang)*35, sunY+Math.sin(ang)*35);
-   x.lineTo(sunX+Math.cos(ang)*(45+len), sunY+Math.sin(ang)*(45+len));
-   x.stroke();
- }
- // Suraj ka gol face
+ // SUN with eyes
+ let sunX=280,sunY=80;
+ x.strokeStyle="rgba(255,215,0,0.7)"; x.lineWidth=3;
+ for(let i=0;i<12;i++){let ang=(i/12)*Math.PI*2+t; x.beginPath(); x.moveTo(sunX+Math.cos(ang)*35,sunY+Math.sin(ang)*35); x.lineTo(sunX+Math.cos(ang)*55,sunY+Math.sin(ang)*55); x.stroke();}
  x.fillStyle="#FFD700"; x.beginPath(); x.arc(sunX,sunY,32,0,7); x.fill();
- x.fillStyle="#FFA500"; x.beginPath(); x.arc(sunX,sunY,28,0,7); x.fill();
- x.fillStyle="#FFFF00"; x.beginPath(); x.arc(sunX,sunY,22,0,7); x.fill();
- // Ankhein 👀
- x.fillStyle="white"; x.beginPath(); x.arc(sunX-8,sunY-5,7,0,7); x.arc(sunX+8,sunY-5,7,0,7); x.fill();
- x.fillStyle="black"; x.beginPath(); x.arc(sunX-8+Math.sin(t)*2,sunY-4,3,0,7); x.arc(sunX+8+Math.sin(t)*2,sunY-4,3,0,7); x.fill();
- x.fillStyle="white"; x.beginPath(); x.arc(sunX-7,sunY-6,1.5,0,7); x.arc(sunX+9,sunY-6,1.5,0,7); x.fill();
- // Muskurahat 😊
- x.strokeStyle="black"; x.lineWidth=2; x.beginPath(); x.arc(sunX,sunY+8,10,0.2,Math.PI-0.2); x.stroke();
- // Gaal laal
- x.fillStyle="rgba(255,100,100,0.5)"; x.beginPath(); x.arc(sunX-14,sunY+5,4,0,7); x.arc(sunX+14,sunY+5,4,0,7); x.fill();
+ x.fillStyle="white"; x.beginPath(); x.arc(sunX-8,sunY-5,6,0,7); x.arc(sunX+8,sunY-5,6,0,7); x.fill();
+ x.fillStyle="black"; x.beginPath(); x.arc(sunX-8+Math.sin(t*2)*2,sunY-4,2.5,0,7); x.arc(sunX+8+Math.sin(t*2)*2,sunY-4,2.5,0,7); x.fill();
+ x.strokeStyle="black"; x.lineWidth=2; x.beginPath(); x.arc(sunX,sunY+8,9,0.2,Math.PI-0.2); x.stroke();
 
  // House
  x.fillStyle="#FFE4B5"; x.fillRect(150,200,190,160); x.strokeStyle="#8B4513"; x.lineWidth=3; x.strokeRect(150,200,190,160);
  x.fillStyle="#B22222"; x.beginPath(); x.moveTo(140,200); x.lineTo(245,130); x.lineTo(350,200); x.closePath(); x.fill(); x.stroke();
- x.fillStyle="#8B4513"; x.fillRect(230,290,45,70);
+ x.fillStyle="#8B4513"; x.fillRect(230,290,45,70); x.fillStyle="#B0E0E6"; x.fillRect(165,230,55,50); x.strokeRect(165,230,55,50); x.fillRect(290,230,40,40); x.strokeRect(290,230,40,40);
 
- // Garden Peeche
- flowers.forEach(fl=>{
-   x.strokeStyle="green"; x.lineWidth=2; x.beginPath(); x.moveTo(fl.x,fl.y); x.lineTo(fl.x,fl.y+12); x.stroke();
-   if(fl.type==0){ x.fillStyle="#FF69B4"; x.beginPath(); x.arc(fl.x,fl.y,6,0,7); x.fill(); }
-   else if(fl.type==1){ x.fillStyle="red"; x.beginPath(); x.arc(fl.x,fl.y,5,0,7); x.fill(); }
-   else{ x.fillStyle="#FFD700"; x.beginPath(); x.arc(fl.x,fl.y,5,0,7); x.fill(); }
+ // Garden peeche
+ flowers.forEach(f=>{x.strokeStyle="green";x.lineWidth=2;x.beginPath();x.moveTo(f.x,f.y);x.lineTo(f.x,f.y+10);x.stroke();x.fillStyle=f.type==0?"#FF69B4":f.type==1?"red":"#FFD700";x.beginPath();x.arc(f.x,f.y,5,0,7);x.fill();});
+
+ // DARAKHT OONCHE AUR ZINDA 🌳
+ // Tree 1 - Bohat ooncha
+ let sway1=Math.sin(t)*3;
+ x.fillStyle="#5D4037"; x.fillRect(25+sway1,320,16,110); // ooncha trunk
+ x.fillStyle="#8D6E63"; x.fillRect(28+sway1,320,5,110); // shine
+ // Patte hilte hue - zinda
+ x.fillStyle="#2E7D32"; x.beginPath(); x.arc(33+sway1,315,38,0,7); x.fill();
+ x.fillStyle="#388E3C"; x.beginPath(); x.arc(25+sway1,305,28,0,7); x.fill();
+ x.fillStyle="#4CAF50"; x.beginPath(); x.arc(45+sway1,300,22,0,7); x.fill();
+ x.fillStyle="#81C784"; x.beginPath(); x.arc(33+sway1,285,12,0,7); x.fill();
+
+ // Tree 2 - Ooncha
+ let sway2=Math.cos(t*1.2)*2.5;
+ x.fillStyle="#5D4037"; x.fillRect(105+sway2,340,14,90);
+ x.fillStyle="#8D6E63"; x.fillRect(108+sway2,340,4,90);
+ x.fillStyle="#2E7D32"; x.beginPath(); x.arc(112+sway2,335,32,0,7); x.fill();
+ x.fillStyle="#388E3C"; x.beginPath(); x.arc(102+sway2,325,24,0,7); x.fill();
+ x.fillStyle="#66BB6A"; x.beginPath(); x.arc(120+sway2,320,18,0,7); x.fill();
+
+ // Girte hue patte 🍃 - zinda lagne ke liye
+ leaves.forEach(l=>{
+   l.y+=l.vy; l.x+=l.vx+Math.sin(t+l.x)*0.3;
+   if(l.y>500){l.y=200+Math.random()*50; l.x=20+Math.random()*120;}
+   x.fillStyle="rgba(34,139,34,0.7)"; x.beginPath(); x.arc(l.x,l.y,l.r,0,7); x.fill();
  });
- // Darakht Aage
- x.fillStyle="#8B4513"; x.fillRect(25,380,14,50); x.fillStyle="#228B22"; x.beginPath(); x.arc(32,370,30,0,7); x.fill();
- x.fillStyle="#8B4513"; x.fillRect(105,390,12,40); x.fillStyle="#2E8B57"; x.beginPath(); x.arc(111,380,25,0,7); x.fill();
 
  requestAnimationFrame(draw);
 }

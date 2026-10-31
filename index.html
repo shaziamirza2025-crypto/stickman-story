@@ -3,36 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pani Bachao - Final</title>
+<title>Pani Bachao - Video Fix</title>
 <style>
 body{margin:0;background:#87CEEB;overflow:hidden;font-family:cursive}
 canvas{width:100vw;height:100vh;display:block}
-#msg{position:fixed;top:35%;left:50%;transform:translate(-50%,-50%);background:white;padding:28px 42px;border-radius:15px;display:none;text-align:center;z-index:20;box-shadow:0 0 30px rgba(0,0,0,0.7);overflow:hidden}
-#msg h2{margin:0 0 8px;font-size:24px;animation:colorChange 0.8s infinite}
-#msg p{margin:4px 0;font-weight:bold;font-size:17px;animation:colorChange 0.8s infinite 0.2s}
-@keyframes colorChange{0%{color:#FF0000}25%{color:#2196F3}50%{color:#4CAF50}75%{color:#FF9800}100%{color:#FF0000}}
-#replay{margin-top:12px;padding:8px 18px;background:#2196F3;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:bold;margin-right:8px}
-#saveBtn{margin-top:12px;padding:8px 18px;background:#E91E63;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:bold}
 h1{position:fixed;top:6px;width:100%;text-align:center;color:#333;z-index:10;font-size:17px}
 #controls{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);z-index:25;background:white;padding:9px 16px;border-radius:25px;box-shadow:0 0 15px rgba(0,0,0,0.3)}
 #controls button{padding:8px 16px;margin:0 5px;border:none;border-radius:20px;cursor:pointer;font-weight:bold}
 #recBtn{background:#F44336;color:white}
 #recBtn.recording{background:#4CAF50;animation:pulse 1s infinite}
 @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
-.border-lights{position:absolute;top:0;left:0;right:0;bottom:0;border-radius:15px;pointer-events:none}
-.light{position:absolute;width:10px;height:10px;border-radius:50%;background:red;box-shadow:0 0 8px currentColor}
 </style>
 </head>
 <body>
 <h1>💧 Pani Bachao - Story 💧</h1>
-<div id="msg">
-<div class="border-lights" id="borderLights"></div>
-<h2>💧 PANI BACHAO! 💧</h2>
-<p>🚫 Pani Waste Na Karain</p>
-<p>💙 Pani Zindagi Hai 💙</p>
-<button id="replay" onclick="resetStory()">Dobara Dekho 🔄</button>
-<button id="saveBtn" onclick="downloadImage()">📸 Save</button>
-</div>
 <div id="controls">
 <button id="recBtn" onclick="toggleRecording()">🔴 Video Record</button>
 <button onclick="resetStory()" style="background:#2196F3;color:white">🔄 Restart</button>
@@ -46,38 +30,17 @@ let t=0, sx2=80, step=0, catX=0, catDir=1;
 let tapOpen=true, waterParticles=[], storyState=0, closeProgress=0, tapX=0, tapY=0;
 let birds=[], flyingBird=null, birdLanded=false;
 let mediaRecorder, recordedChunks=[], isRecording=false;
-let borderContainer=document.getElementById('borderLights');
-function createBorderLights(){
-  borderContainer.innerHTML='';
-  for(let i=0;i<24;i++){
-    let d=document.createElement('div'); d.className='light';
-    d.style.animation=`colorChange 0.8s infinite ${i*0.08}s`;
-    borderContainer.appendChild(d);
-  }
-}
-function positionLights(){
-  let lights=document.querySelectorAll('.light');
-  let box=document.getElementById('msg');
-  if(!box || box.style.display=='none') return;
-  let w=box.offsetWidth, h=box.offsetHeight;
-  lights.forEach((l,i)=>{
-    let p=(i/lights.length + t*0.02)%1, x,y;
-    if(p<0.25){ x=p/0.25*w; y=0; }
-    else if(p<0.5){ x=w; y=(p-0.25)/0.25*h; }
-    else if(p<0.75){ x=w-(p-0.5)/0.25*w; y=h; }
-    else { x=0; y=h-(p-0.75)/0.25*h; }
-    l.style.left=x-5+'px'; l.style.top=y-5+'px';
-  });
-}
-createBorderLights();
+let showCanvasMsg=false;
+
 function resetStory(){
-  tapOpen=true; storyState=0; closeProgress=0; sx2=80; catX=C.width-320; birdLanded=false;
-  waterParticles=[]; document.getElementById('msg').style.display='none';
+  tapOpen=true; storyState=0; closeProgress=0; sx2=80; catX=C.width-320; birdLanded=false; showCanvasMsg=false;
+  waterParticles=[]; 
   birds=[]; 
   for(let i=0;i<4;i++){ birds.push({x:Math.random()*C.width, y:35+Math.random()*55, vx:0.7+Math.random()*1, wing:Math.random()*10}); }
   flyingBird={x:-30, y:55, tx:C.width-145, ty:0, vx:2.8, wing:0, flying:true};
 }
 resetStory();
+
 function toggleRecording(){
   let btn=document.getElementById('recBtn');
   if(!isRecording){
@@ -88,19 +51,60 @@ function toggleRecording(){
     mediaRecorder.onstop=()=>{
       let blob=new Blob(recordedChunks,{type:'video/webm'});
       let url=URL.createObjectURL(blob);
-      let a=document.createElement('a'); a.href=url; a.download='Pani-Bachao-Story.webm'; a.click();
+      let a=document.createElement('a'); a.href=url; a.download='Pani-Bachao-Final-Video.webm'; a.click();
       URL.revokeObjectURL(url);
       btn.textContent='🔴 Video Record'; btn.classList.remove('recording'); isRecording=false;
     };
-    mediaRecorder.start(); isRecording=true; btn.textContent='⏹️ Stop & Download'; btn.classList.add('recording');
+    mediaRecorder.start(); isRecording=true; btn.textContent='⏹️ Stop & Download Video'; btn.classList.add('recording');
   } else { mediaRecorder.stop(); }
 }
-function downloadImage(){
-  let a=document.createElement('a'); a.href=C.toDataURL('image/png'); a.download='Pani-Bachao.png'; a.click();
+
+function drawCanvasMessage(){
+  // YEHI MSG AB CANVAS PAR BANEGA - VIDEO MEIN AAYEGA!
+  let msgW=340, msgH=160;
+  let mx=C.width/2 - msgW/2, my=C.height*0.35 - msgH/2; // oper kar diya 35%
+  
+  // White box
+  X.fillStyle='white'; X.shadowColor='rgba(0,0,0,0.5)'; X.shadowBlur=20;
+  X.fillRect(mx,my,msgW,msgH);
+  X.shadowBlur=0;
+  
+  // Border lights - pory border per chal rahi
+  let colors=['#FF0000','#FFFF00','#00FF00','#00FFFF','#FF00FF'];
+  let totalLights=24;
+  for(let i=0;i<totalLights;i++){
+    let p=(i/totalLights + t*0.02)%1;
+    let x,y;
+    if(p<0.25){ x=mx + p/0.25*msgW; y=my; }
+    else if(p<0.5){ x=mx+msgW; y=my + (p-0.25)/0.25*msgH; }
+    else if(p<0.75){ x=mx+msgW - (p-0.5)/0.25*msgW; y=my+msgH; }
+    else { x=mx; y=my+msgH - (p-0.75)/0.25*msgH; }
+    let colIndex=Math.floor(t*2 + i)%colors.length;
+    X.fillStyle=colors[colIndex];
+    X.shadowColor=colors[colIndex]; X.shadowBlur=10;
+    X.beginPath(); X.arc(x,y,6,0,6.28); X.fill();
+    X.shadowBlur=0;
+  }
+  
+  // Text - rang bari bari change
+  let colorCycle=['#FF0000','#2196F3','#4CAF50','#FF9800'];
+  let c1=colorCycle[Math.floor(t)%4];
+  let c2=colorCycle[(Math.floor(t*0.8)+1)%4];
+  let c3=colorCycle[(Math.floor(t*0.6)+2)%4];
+  
+  X.textAlign='center';
+  X.font='bold 20px Arial';
+  X.fillStyle=c1; X.fillText('💧 PANI BACHAO! 💧', C.width/2, my+35);
+  X.font='bold 14px Arial';
+  X.fillStyle=c2; X.fillText('🚫 Pani Waste Na Karain', C.width/2, my+65);
+  X.fillStyle=c3; X.fillText('💙 Pani Zindagi Hai 💙', C.width/2, my+90);
+  
+  X.fillStyle='#2196F3'; X.fillRect(C.width/2-70, my+105, 140, 28);
+  X.fillStyle='white'; X.font='bold 12px Arial'; X.fillText('Dobara Dekho 🔄', C.width/2, my+123);
 }
+
 function draw(){
 t+=0.14; step+=0.2; catX+=catDir*0.8;
-positionLights();
 let hx=C.width-260, hy=C.height-260;
 let houseLeft=hx, houseRight=hx+220;
 if(catX>houseRight-30) catDir=-1;
@@ -222,7 +226,7 @@ if(storyState==0){
 }
 if(storyState==1){
   closeProgress+=0.035;
-  if(closeProgress>=1){ tapOpen=false; storyState=2; setTimeout(()=>{document.getElementById('msg').style.display='block'; storyState=3;},1200); }
+  if(closeProgress>=1){ tapOpen=false; storyState=2; setTimeout(()=>{showCanvasMsg=true; storyState=3;},1000); }
 }
 let leg1=Math.sin(step)*16, leg2=Math.sin(step+Math.PI)*16;
 let arm1=Math.sin(step)*12, arm2=Math.sin(step+Math.PI)*12;
@@ -241,6 +245,12 @@ X.fillStyle='black';X.beginPath();X.arc(sx2-6,sy2-90,2,0,6.28);X.arc(sx2+6,sy2-9
 let m2=storyState==1?2:Math.abs(Math.sin(t*0.6))*6+1;
 X.fillStyle='#FF4444';X.beginPath();X.ellipse(sx2,sy2-78,6,m2,0,0,6.28);X.fill();
 X.strokeStyle='black';X.lineWidth=1;X.stroke();
+
+// === MID SCREEN MSG - AB CANVAS PAR - VIDEO MEIN AAYEGA ===
+if(showCanvasMsg){
+  drawCanvasMessage();
+}
+
 requestAnimationFrame(draw);
 }
 draw();

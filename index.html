@@ -2,43 +2,42 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mehndi Aur Laddu - Saas Bahu Story</title>
+<title>Pani Bachao Story</title>
 <style>
-body{margin:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif}
-#stage{
- width:360px;height:640px;
- background-image: url('./mehndi.jpg');
- background-size: cover;
- background-position: center top;
- border:4px solid #fff;border-radius:20px;
- position:relative;overflow:hidden;
-}
-.overlay{position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,0.6) 20%, transparent 60%)}
-.dialog{position:absolute;bottom:20px;left:5%;width:90%;background:rgba(255,255,255,0.95);padding:14px;border-radius:15px;text-align:center;font-weight:bold;font-size:17px;box-shadow:0 4px 15px rgba(0,0,0,0.5)}
-.title{position:absolute;top:15px;left:5%;width:90%;background:#ff4757;color:white;padding:8px;border-radius:10px;text-align:center;font-weight:bold;font-size:14px}
-button{margin-top:15px;padding:14px 40px;font-size:17px;border-radius:30px;border:none;background:#8e44ad;color:white;font-weight:bold}
+body{margin:0;background:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif}
+#stage{width:360px;height:640px;background:linear-gradient(to bottom, #87CEEB 0%, #FFD580 100%);border:4px solid white;border-radius:20px;position:relative;overflow:hidden}
+.sun{position:absolute;width:70px;height:70px;background:#FFD700;border-radius:50%;box-shadow:0 0 30px #FFD700;animation: sunrise 4s infinite alternate}
+@keyframes sunrise{0%{top:400px;left:20px}100%{top:30px;left:40px}}
+.house{position:absolute;bottom:100px;left:80px;width:200px;height:150px;background:#DEB887;border:3px solid #8B4513}
+.roof{position:absolute;top:-40px;left:-10px;width:0;height:0;border-left:110px solid transparent;border-right:110px solid transparent;border-bottom:50px solid #8B0000}
+.door{position:absolute;bottom:0;left:70px;width:50px;height:80px;background:#8B4513}
+.tap{position:absolute;bottom:100px;left:20px;font-size:40px}
+.water{position:absolute;bottom:20px;left:30px;width:10px;background:#00BFFF;animation: waste 1s infinite linear}
+@keyframes waste{0%{height:0;top:200px}100%{height:80px;top:280px}}
+.cloud{position:absolute;top:20px;font-size:30px;animation: movecloud 6s infinite linear}
+@keyframes movecloud{0%{left:-50px}100%{left:360px}}
+.text{position:absolute;bottom:15px;left:5%;width:90%;background:white;padding:12px;border-radius:15px;text-align:center;font-weight:bold}
+button{margin-top:15px;padding:12px 30px;border-radius:25px;border:none;background:#27ae60;color:white;font-weight:bold}
 </style>
 </head>
 <body>
 <div id="stage">
- <div class="overlay"></div>
- <div class="title">Mehndi Aur Laddu Part 2 - Saas Bahu Story</div>
- <div class="dialog" id="d">Saas: Are Bahu, ye laddu kisne khaye?</div>
+<div class="sun"></div>
+<div class="cloud" style="top:30px">☁️</div>
+<div class="cloud" style="top:60px; animation-delay:2s">☁️</div>
+<div class="tap">🚰</div>
+<div class="water"></div>
+<div class="house">
+<div class="roof"></div>
+<div class="door"></div>
 </div>
-<button onclick="next()">Next Scene →</button>
+<div class="text" id="t">Sun is Rising... Subah ho gayi!</div>
+</div>
+<button onclick="next()">Next →</button>
 <script>
-let i=0;
-let lines=[
-"Saas: Are Bahu, ye laddu kisne khaye?",
-"Bahu: Amma ji maine nahi, choti ne khaye honge!",
-"Saas: Haye itne saare laddu, mehndi kharab ho jayegi!",
-"Bahu: Amma ji tension nahi, mehndi ke baad laddu aur meethay lagte hain!",
-"4ro Khush! Mehndi Aur Laddu Party! ❤️"
-];
-function next(){
- i=(i+1)%lines.length;
- document.getElementById('d').innerText=lines[i];
-}
+let s=0;
+let lines=["Sun is Rising... Subah ho gayi! ☀️","Ghar me Nal khula reh gaya! 🚰","Paani waste ho raha hai! 💧","Arre paani bachao! Jaldi band karo!","Pani bach gaya! Good Job! ❤️"];
+function next(){s=(s+1)%lines.length;document.getElementById('t').innerText=lines[s]}
 </script>
 </body>
 </html>
